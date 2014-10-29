@@ -1,0 +1,25 @@
+﻿生成启动时间为 2014/6/30 19:31:46。
+     1>项目“E:\HEVC_software\tags\HM-14.0\build\vc10\TAppDecoder_vc10.vcxproj”在节点 2 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在对“E:\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Debug\TAppDecoder\TAppDecoder.unsuccessfulbuild”执行 Touch 任务。
+       ClCompile:
+         所有输出均为最新。
+       Link:
+         D:\Program Files\Visual_Studio_2010\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\HEVC_software\tags\HM-14.0\build\\..\bin\vc10\Win32\Debug\TAppDecoder.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"E:\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Debug\TAppDecoder\TAppDecoder.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\HEVC_software\tags\HM-14.0\bin\vc10\Win32\Debug\TAppDecoder.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\HEVC_software\tags\HM-14.0\build\\..\bin\vc10\Win32\Debug\TAppDecoder.lib" /MACHINE:X86 "E:\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Debug\TAppDecoder\decmain.obj"
+         "E:\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Debug\TAppDecoder\TAppDecCfg.obj"
+         "E:\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Debug\TAppDecoder\TAppDecTop.obj"
+         "E:\HEVC_software\tags\HM-14.0\build\vc10\Win32\Debug\TAppCommon\TAppCommon.lib"
+         "E:\HEVC_software\tags\HM-14.0\build\vc10\Win32\Debug\TLibCommon\TLibCommon.lib"
+         "E:\HEVC_software\tags\HM-14.0\build\vc10\Win32\Debug\TLibDecoder\TLibDecoder.lib"
+         "E:\HEVC_software\tags\HM-14.0\build\vc10\Win32\Debug\TLibVideoIo\TLibVideoIO.lib"
+         TAppDecoder_vc10.vcxproj -> E:\HEVC_software\tags\HM-14.0\build\\..\bin\vc10\Win32\Debug\TAppDecoder.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"E:\HEVC_software\tags\HM-14.0\build\\..\bin\vc10\Win32\Debug\TAppDecoder.exe.manifest" /manifest "E:\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Debug\TAppDecoder\TAppDecoder.exe.intermediate.manifest"
+       FinalizeBuildStatus:
+         正在删除文件“E:\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Debug\TAppDecoder\TAppDecoder.unsuccessfulbuild”。
+         正在对“E:\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Debug\TAppDecoder\TAppDecoder.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\HEVC_software\tags\HM-14.0\build\vc10\TAppDecoder_vc10.vcxproj”(build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:00.79
