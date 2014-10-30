@@ -2451,7 +2451,7 @@ TEncSearch::estIntraPredQT( TComDataCU* pcCU,
 
         predIntraLumaAng( pcCU->getPattern(), uiMode, piPred, uiStride, uiWidth, uiHeight, bAboveAvail, bLeftAvail );
         
-        // use hadamard transform here  SATD
+        // use hadamard transform here  HAD
         UInt uiSad = m_pcRdCost->calcHAD(g_bitDepthY, piOrg, uiStride, piPred, uiStride, uiWidth, uiHeight );
         //calculate the bit rate
         UInt   iModeBits = xModeBitsIntra( pcCU, uiMode, uiPU, uiPartOffset, uiDepth, uiInitTrDepth );
@@ -2518,6 +2518,7 @@ TEncSearch::estIntraPredQT( TComDataCU* pcCU,
       UInt   uiPUDistC = 0;
       Double dPUCost   = 0.0;
 #if HHI_RQT_INTRA_SPEEDUP
+	  //true:not split CU  first   (TU level)
       xRecurIntraCodingQT( pcCU, uiInitTrDepth, uiPartOffset, bLumaOnly, pcOrgYuv, pcPredYuv, pcResiYuv, uiPUDistY, uiPUDistC, true, dPUCost );
 #else
       xRecurIntraCodingQT( pcCU, uiInitTrDepth, uiPartOffset, bLumaOnly, pcOrgYuv, pcPredYuv, pcResiYuv, uiPUDistY, uiPUDistC, dPUCost );
@@ -2579,6 +2580,7 @@ TEncSearch::estIntraPredQT( TComDataCU* pcCU,
       UInt   uiPUDistY = 0;
       UInt   uiPUDistC = 0;
       Double dPUCost   = 0.0;
+	  //false:check split CU. determine the best size of PU(r-d cost)    TU level
       xRecurIntraCodingQT( pcCU, uiInitTrDepth, uiPartOffset, bLumaOnly, pcOrgYuv, pcPredYuv, pcResiYuv, uiPUDistY, uiPUDistC, false, dPUCost );
       
       // check r-d cost
@@ -2721,10 +2723,71 @@ TEncSearch::estIntraPredChromaQT( TComDataCU* pcCU,
   UInt    uiBestMode  = 0;
   UInt    uiBestDist  = 0;
   Double  dBestCost   = MAX_DOUBLE;
-  
+#if CHROMA_MODE_MODIFY
+   //----- restore context models -----
+  m_pcRDGoOnSbacCoder->load( m_pppcRDSbacCoder[uiDepth][CI_CURR_BEST] );
+
+  //----- chroma coding -----
+    UInt    uiDist = 0;
+    pcCU->setChromIntraDirSubParts  ( DM_CHROMA_IDX, 0, uiDepth );
+    xRecurIntraChromaCodingQT       ( pcCU,   0, 0, pcOrgYuv, pcPredYuv, pcResiYuv, uiDist );
+    if( pcCU->getSlice()->getPPS()->getUseTransformSkip() )
+    {
+      m_pcRDGoOnSbacCoder->load( m_pppcRDSbacCoder[uiDepth][CI_CURR_BEST] );
+    }
+    UInt    uiBits = xGetIntraBitsQT( pcCU,   0, 0, false, true, false );
+    Double  dCost  = m_pcRdCost->calcRdCost( uiBits, uiDist );
+   	  dBestCost   = dCost;
+      uiBestDist  = uiDist;
+      uiBestMode  = DM_CHROMA_IDX;
+      UInt  uiQPN = pcCU->getPic()->getNumPartInCU() >> ( uiDepth << 1 );
+      xSetIntraResultChromaQT( pcCU, 0, 0, pcRecoYuv );
+      ::memcpy( m_puhQTTempCbf[1], pcCU->getCbf( TEXT_CHROMA_U ), uiQPN * sizeof( UChar ) );
+      ::memcpy( m_puhQTTempCbf[2], pcCU->getCbf( TEXT_CHROMA_V ), uiQPN * sizeof( UChar ) );
+      ::memcpy( m_puhQTTempTransformSkipFlag[1], pcCU->getTransformSkip( TEXT_CHROMA_U ), uiQPN * sizeof( UChar ) );
+      ::memcpy( m_puhQTTempTransformSkipFlag[2], pcCU->getTransformSkip( TEXT_CHROMA_V ), uiQPN * sizeof( UChar ) );
+	  uiQPN = pcCU->getPic()->getNumPartInCU() >> ( uiDepth << 1 );
+#elif MODE_INDEX_MODIFY
+   //----- init mode list -----
+  UInt  uiMinMode = 0;
+  UInt  uiModeList[ NUM_CHROMA_MODE ];
+
+  pcCU->getAllowedChromaDir( 0, uiModeList );
+  UInt  uiMaxMode = NUM_CHROMA_MODE;
+        //----- restore context models -----
+  m_pcRDGoOnSbacCoder->load( m_pppcRDSbacCoder[uiDepth][CI_CURR_BEST] );
+
+  //----- chroma coding -----
+    UInt    uiDist = 0;
+	UInt   tempMode=0;
+	if(uiModeList[0]==34)
+		tempMode=PLANAR_IDX;
+	else
+		tempMode=uiModeList[0];
+//	printf("Mode:%d   ",tempMode);
+    pcCU->setChromIntraDirSubParts  ( tempMode, 0, uiDepth );
+    xRecurIntraChromaCodingQT       ( pcCU,   0, 0, pcOrgYuv, pcPredYuv, pcResiYuv, uiDist );
+    if( pcCU->getSlice()->getPPS()->getUseTransformSkip() )
+    {
+      m_pcRDGoOnSbacCoder->load( m_pppcRDSbacCoder[uiDepth][CI_CURR_BEST] );
+    }
+    UInt    uiBits = xGetIntraBitsQT( pcCU,   0, 0, false, true, false );
+    Double  dCost  = m_pcRdCost->calcRdCost( uiBits, uiDist );
+   	  dBestCost   = dCost;
+      uiBestDist  = uiDist;
+      uiBestMode  = tempMode;
+      UInt  uiQPN = pcCU->getPic()->getNumPartInCU() >> ( uiDepth << 1 );
+      xSetIntraResultChromaQT( pcCU, 0, 0, pcRecoYuv );
+      ::memcpy( m_puhQTTempCbf[1], pcCU->getCbf( TEXT_CHROMA_U ), uiQPN * sizeof( UChar ) );
+      ::memcpy( m_puhQTTempCbf[2], pcCU->getCbf( TEXT_CHROMA_V ), uiQPN * sizeof( UChar ) );
+      ::memcpy( m_puhQTTempTransformSkipFlag[1], pcCU->getTransformSkip( TEXT_CHROMA_U ), uiQPN * sizeof( UChar ) );
+      ::memcpy( m_puhQTTempTransformSkipFlag[2], pcCU->getTransformSkip( TEXT_CHROMA_V ), uiQPN * sizeof( UChar ) );
+	  uiQPN = pcCU->getPic()->getNumPartInCU() >> ( uiDepth << 1 );
+#else
   //----- init mode list -----
   UInt  uiMinMode = 0;
   UInt  uiModeList[ NUM_CHROMA_MODE ];
+
   pcCU->getAllowedChromaDir( 0, uiModeList );
   UInt  uiMaxMode = NUM_CHROMA_MODE;
 
@@ -2759,9 +2822,11 @@ TEncSearch::estIntraPredChromaQT( TComDataCU* pcCU,
       ::memcpy( m_puhQTTempTransformSkipFlag[2], pcCU->getTransformSkip( TEXT_CHROMA_V ), uiQPN * sizeof( UChar ) );
     }
   }
-  
+ 
   //----- set data -----
-  UInt  uiQPN = pcCU->getPic()->getNumPartInCU() >> ( uiDepth << 1 );
+  //UInt  uiQPN = pcCU->getPic()->getNumPartInCU() >> ( uiDepth << 1 );
+   UInt uiQPN = pcCU->getPic()->getNumPartInCU() >> ( uiDepth << 1 );
+#endif
   ::memcpy( pcCU->getCbf( TEXT_CHROMA_U ), m_puhQTTempCbf[1], uiQPN * sizeof( UChar ) );
   ::memcpy( pcCU->getCbf( TEXT_CHROMA_V ), m_puhQTTempCbf[2], uiQPN * sizeof( UChar ) );
   ::memcpy( pcCU->getTransformSkip( TEXT_CHROMA_U ), m_puhQTTempTransformSkipFlag[1], uiQPN * sizeof( UChar ) );
@@ -2990,7 +3055,7 @@ Void TEncSearch::xMergeEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPUI
   {
     pcCU->getInterMergeCandidates( uiAbsPartIdx, iPUIdx, cMvFieldNeighbours, uhInterDirNeighbours, numValidMergeCand );
   }
-  xRestrictBipredMergeCand( pcCU, iPUIdx, cMvFieldNeighbours, uhInterDirNeighbours, numValidMergeCand );
+  xRestrictBipredMergeCand( pcCU, iPUIdx, cMvFieldNeighbours, uhInterDirNeighbours, numValidMergeCand );   //convert bi-pred merge candidates to uni-pred
 
   ruiCost = MAX_UINT;
   for( UInt uiMergeCand = 0; uiMergeCand < numValidMergeCand; ++uiMergeCand )
@@ -3054,9 +3119,9 @@ Void TEncSearch::xRestrictBipredMergeCand( TComDataCU* pcCU, UInt puIdx, TComMvF
  * \returns Void
  */
 #if AMP_MRG
-Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*& rpcPredYuv, TComYuv*& rpcResiYuv, TComYuv*& rpcRecoYuv, Bool bUseRes, Bool bUseMRG )
+Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*& rpcPredYuv, TComYuv*& rpcResiYuv, TComYuv*& rpcRecoYuv, Int searchflag, Bool bUseRes, Bool bUseMRG )
 #else
-Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*& rpcPredYuv, TComYuv*& rpcResiYuv, TComYuv*& rpcRecoYuv, Bool bUseRes )
+Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*& rpcPredYuv, TComYuv*& rpcResiYuv, TComYuv*& rpcRecoYuv, Int searchflag, Bool bUseRes )
 #endif
 {
   m_acYuvPred[0].clear();
@@ -3150,9 +3215,13 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*&
     UInt          bitsValidList1 = MAX_UINT;
     UInt          costValidList1 = MAX_UINT;
 
-    xGetBlkBits( ePartSize, pcCU->getSlice()->isInterP(), iPartIdx, uiLastMode, uiMbBits);
+    xGetBlkBits( ePartSize, pcCU->getSlice()->isInterP(), iPartIdx, uiLastMode, uiMbBits);  //set uiMbBits value
     
-    pcCU->getPartIndexAndSize( iPartIdx, uiPartAddr, iRoiWidth, iRoiHeight );
+    pcCU->getPartIndexAndSize( iPartIdx, uiPartAddr, iRoiWidth, iRoiHeight );   //get PU partition index and size(width and height)
+#if IME_MODIFY
+//	printf("iRoiWidth:%d\t",iRoiWidth);
+//	printf("iRoiHeight:%d\n",iRoiHeight);
+#endif
     
 #if AMP_MRG
     Bool bTestNormalMC = true;
@@ -3178,11 +3247,16 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*&
         {
           uiBitsTemp += iRefIdxTemp+1;
           if ( iRefIdxTemp == pcCU->getSlice()->getNumRefIdx(eRefPicList)-1 ) uiBitsTemp--;
-        }
+		}
+#if IME_MODIFY
+
+#else
 #if ZERO_MVD_EST
         xEstimateMvPredAMVP( pcCU, pcOrgYuv, iPartIdx, eRefPicList, iRefIdxTemp, cMvPred[iRefList][iRefIdxTemp], false, &biPDistTemp, &uiZeroMvdDistTemp);
 #else
+	//Add 5 candidates into the prediction list
         xEstimateMvPredAMVP( pcCU, pcOrgYuv, iPartIdx, eRefPicList, iRefIdxTemp, cMvPred[iRefList][iRefIdxTemp], false, &biPDistTemp);
+
 #endif
         aaiMvpIdx[iRefList][iRefIdxTemp] = pcCU->getMVPIdx(eRefPicList, uiPartAddr);
         aaiMvpNum[iRefList][iRefIdxTemp] = pcCU->getMVPNum(eRefPicList, uiPartAddr);
@@ -3195,6 +3269,8 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*&
         }
 
         uiBitsTemp += m_auiMVPIdxCost[aaiMvpIdx[iRefList][iRefIdxTemp]][AMVP_MAX_NUM_CANDS];
+#endif
+
 #if ZERO_MVD_EST
         if ( iRefList == 0 || pcCU->getSlice()->getList1IdxToList0Idx( iRefIdxTemp ) < 0 )
         {
@@ -3232,16 +3308,85 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*&
           }
           else
           {
+#if IME_MODIFY
+			  if(statusIMEflag())
+			  {
+				  if(iRefIdxTemp==0)
+				    addnumPU();
+				  if(iRefIdxTemp==1)
+					addnumPU_1();
+				  if(iRefIdxTemp==2)
+					addnumPU_2();
+				  if(iRefIdxTemp==3)
+					addnumPU_3();
+				  cMvPred[iRefList][iRefIdxTemp].setHor(0);
+				  cMvPred[iRefList][iRefIdxTemp].setVer(0);
+				  xIntMotionEstimation( pcCU, pcOrgYuv, iPartIdx, eRefPicList, &cMvPred[iRefList][iRefIdxTemp], iRefIdxTemp, cMvTemp[iRefList][iRefIdxTemp], uiBitsTemp, uiCostTemp,searchflag );
+			  }
+			  else
+			  {
+//				  printf("flag1:_______________________________________\n");
+#endif
             xMotionEstimation ( pcCU, pcOrgYuv, iPartIdx, eRefPicList, &cMvPred[iRefList][iRefIdxTemp], iRefIdxTemp, cMvTemp[iRefList][iRefIdxTemp], uiBitsTemp, uiCostTemp );
+#if IME_MODIFY
+			  }
+#endif
           }
         }
         else
         {
+#if IME_MODIFY
+			  if(statusIMEflag())
+			  {
+				  if(iRefIdxTemp==0)
+				    addnumPU();
+				  if(iRefIdxTemp==1)
+				  if(iRefIdxTemp==2)
+					addnumPU_2();
+				  if(iRefIdxTemp==3)
+					addnumPU_3();
+				  cMvPred[iRefList][iRefIdxTemp].setHor(0);
+				  cMvPred[iRefList][iRefIdxTemp].setVer(0);
+				  xIntMotionEstimation( pcCU, pcOrgYuv, iPartIdx, eRefPicList, &cMvPred[iRefList][iRefIdxTemp], iRefIdxTemp, cMvTemp[iRefList][iRefIdxTemp], uiBitsTemp, uiCostTemp,searchflag );
+			  }
+//				  printf("Hello World!\t");
+			  else
+			  {
+//				   printf("flag2:========================================\n");
+#endif
           xMotionEstimation ( pcCU, pcOrgYuv, iPartIdx, eRefPicList, &cMvPred[iRefList][iRefIdxTemp], iRefIdxTemp, cMvTemp[iRefList][iRefIdxTemp], uiBitsTemp, uiCostTemp );
+#if IME_MODIFY
+			  }
+#endif
         }
 #else
         xMotionEstimation ( pcCU, pcOrgYuv, iPartIdx, eRefPicList, &cMvPred[iRefList][iRefIdxTemp], iRefIdxTemp, cMvTemp[iRefList][iRefIdxTemp], uiBitsTemp, uiCostTemp );
 #endif
+
+
+      if(searchflag)
+	  {
+#if IME_MODIFY
+#if ZERO_MVD_EST
+        xEstimateMvPredAMVP( pcCU, pcOrgYuv, iPartIdx, eRefPicList, iRefIdxTemp, cMvPred[iRefList][iRefIdxTemp], false, &biPDistTemp, &uiZeroMvdDistTemp);
+#else
+	//Add 5 candidates into the prediction list
+        xEstimateMvPredAMVP( pcCU, pcOrgYuv, iPartIdx, eRefPicList, iRefIdxTemp, cMvPred[iRefList][iRefIdxTemp], false, &biPDistTemp);
+
+#endif
+        aaiMvpIdx[iRefList][iRefIdxTemp] = pcCU->getMVPIdx(eRefPicList, uiPartAddr);
+        aaiMvpNum[iRefList][iRefIdxTemp] = pcCU->getMVPNum(eRefPicList, uiPartAddr);
+        
+        if(pcCU->getSlice()->getMvdL1ZeroFlag() && iRefList==1 && biPDistTemp < bestBiPDist)
+        {
+          bestBiPDist = biPDistTemp;
+          bestBiPMvpL1 = aaiMvpIdx[iRefList][iRefIdxTemp];
+          bestBiPRefIdxL1 = iRefIdxTemp;
+        }
+
+        uiBitsTemp += m_auiMVPIdxCost[aaiMvpIdx[iRefList][iRefIdxTemp]][AMVP_MAX_NUM_CANDS];
+#endif
+
         xCopyAMVPInfo(pcCU->getCUMvField(eRefPicList)->getAMVPInfo(), &aacAMVPInfo[iRefList][iRefIdxTemp]); // must always be done ( also when AMVP_MODE = AM_NONE )
         xCheckBestMVP(pcCU, eRefPicList, cMvTemp[iRefList][iRefIdxTemp], cMvPred[iRefList][iRefIdxTemp], aaiMvpIdx[iRefList][iRefIdxTemp], uiBitsTemp, uiCostTemp);
 
@@ -3269,9 +3414,12 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*&
           mvValidList1     = cMvTemp[iRefList][iRefIdxTemp];
           refIdxValidList1 = iRefIdxTemp;
         }
-      }
-    }
+	  }
+     }
+   }   //end of RefList filling 
     //  Bi-directional prediction
+   if(searchflag)
+   {
     if ( (pcCU->getSlice()->isInterB()) && (pcCU->isBipredRestriction(iPartIdx) == false) )
     {
       
@@ -3283,7 +3431,7 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*&
       
       UInt uiMotBits[2];
 
-      if(pcCU->getSlice()->getMvdL1ZeroFlag())
+      if(pcCU->getSlice()->getMvdL1ZeroFlag())    //Flag=1 -> List 1 has filled 
       {
         xCopyAMVPInfo(&aacAMVPInfo[1][bestBiPRefIdxL1], pcCU->getCUMvField(REF_PIC_LIST_1)->getAMVPInfo());
         pcCU->setMVPIdxSubParts( bestBiPMvpL1, REF_PIC_LIST_1, uiPartAddr, iPartIdx, pcCU->getDepth(uiPartAddr));
@@ -3420,6 +3568,7 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*&
         }
       } // for loop-iter
     } // if (B_SLICE)
+  }
 #if ZERO_MVD_EST
     if ( (pcCU->getSlice()->isInterB()) && (pcCU->isBipredRestriction(iPartIdx) == false) )
     {
@@ -3475,6 +3624,9 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*&
 #if AMP_MRG
     } //end if bTestNormalMC
 #endif
+
+if(searchflag)
+{
     //  Clear Motion Field
     pcCU->getCUMvField(REF_PIC_LIST_0)->setAllMvField( TComMvField(), ePartSize, uiPartAddr, 0, iPartIdx );
     pcCU->getCUMvField(REF_PIC_LIST_1)->setAllMvField( TComMvField(), ePartSize, uiPartAddr, 0, iPartIdx );
@@ -3574,12 +3726,17 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*&
       pcCU->getCUMvField(REF_PIC_LIST_0)->setAllMv( cMv[0], ePartSize, uiPartAddr, 0, iPartIdx );
       pcCU->getCUMvField(REF_PIC_LIST_0)->setAllRefIdx( iRefIdx[0], ePartSize, uiPartAddr, 0, iPartIdx );
       TempMv = cMv[0] - cMvPred[0][iRefIdx[0]];
+//	  printf("MV X:%d\t",cMv[0].getHor());
+//	  printf("MV Y:%d\t",cMv[0].getVer());
+//	  printf("Mv pred X:%d\t",cMvPred[0][iRefIdx[0]].getHor());
+//	  printf("Mv pred Y:%d\t",cMvPred[0][iRefIdx[0]].getVer());
       pcCU->getCUMvField(REF_PIC_LIST_0)->setAllMvd    ( TempMv,                 ePartSize, uiPartAddr, 0, iPartIdx );
       pcCU->setInterDirSubParts( 1, uiPartAddr, iPartIdx, pcCU->getDepth(0) );
       
       pcCU->setMVPIdxSubParts( aaiMvpIdx[0][iRefIdx[0]], REF_PIC_LIST_0, uiPartAddr, iPartIdx, pcCU->getDepth(uiPartAddr));
       pcCU->setMVPNumSubParts( aaiMvpNum[0][iRefIdx[0]], REF_PIC_LIST_0, uiPartAddr, iPartIdx, pcCU->getDepth(uiPartAddr));
-
+//	  printf("MVP Index:%d\t",aaiMvpIdx[0][iRefIdx[0]]);
+//	  printf("MVP num:%d\n",aaiMvpNum[0][iRefIdx[0]]);
       uiMEBits = uiBits[0];
     }
     else
@@ -3663,10 +3820,11 @@ Void TEncSearch::predInterSearch( TComDataCU* pcCU, TComYuv* pcOrgYuv, TComYuv*&
 
     //  MC
     motionCompensation ( pcCU, rpcPredYuv, REF_PIC_LIST_X, iPartIdx );
+ }
     
-  } //  end of for ( Int iPartIdx = 0; iPartIdx < iNumPart; iPartIdx++ )
+} //  end of for ( Int iPartIdx = 0; iPartIdx < iNumPart; iPartIdx++ )
 
-  setWpScalingDistParam( pcCU, -1, REF_PIC_LIST_X );
+  setWpScalingDistParam( pcCU, -1, REF_PIC_LIST_X );    //weighted prediction
 
   return;
 }
@@ -3857,8 +4015,13 @@ Void TEncSearch::xCheckBestMVP ( TComDataCU* pcCU, RefPicList eRefPicList, TComM
   m_pcRdCost->setCostScale ( 0    );
   
   Int iBestMVPIdx = riMVPIdx;
-  
+#if IME_MODIFY
+  TComMv rcMvPred_manual;
+  rcMvPred_manual.setZero();
+  m_pcRdCost->setPredictor( rcMvPred_manual );
+#else
   m_pcRdCost->setPredictor( rcMvPred );
+#endif
   Int iOrgMvBits  = m_pcRdCost->getBits(cMv.getHor(), cMv.getVer());
   iOrgMvBits += m_auiMVPIdxCost[riMVPIdx][AMVP_MAX_NUM_CANDS];
   Int iBestMvBits = iOrgMvBits;
@@ -3879,15 +4042,15 @@ Void TEncSearch::xCheckBestMVP ( TComDataCU* pcCU, RefPicList eRefPicList, TComM
     }
   }
   
-  if (iBestMVPIdx != riMVPIdx)  //if changed
-  {
+//  if (iBestMVPIdx != riMVPIdx)  //if changed
+//  {
     rcMvPred = pcAMVPInfo->m_acMvCand[iBestMVPIdx];
     
     riMVPIdx = iBestMVPIdx;
     UInt uiOrgBits = ruiBits;
     ruiBits = uiOrgBits - iOrgMvBits + iBestMvBits;
     ruiCost = (ruiCost - m_pcRdCost->getCost( uiOrgBits ))  + m_pcRdCost->getCost( ruiBits );
-  }
+//  }
 }
 
 UInt TEncSearch::xGetTemplateCost( TComDataCU* pcCU,
@@ -3945,6 +4108,67 @@ UInt TEncSearch::xGetTemplateCost( TComDataCU* pcCU,
   return uiCost;
 }
 
+
+#if IME_MODIFY
+Void TEncSearch::xIntMotionEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPartIdx, RefPicList eRefPicList, TComMv* pcMvPred, Int iRefIdxPred, TComMv& rcMv, UInt& ruiBits, UInt& ruiCost,Int searchflag, Bool bBi  )
+{
+  UInt          uiPartAddr;
+  Int           iRoiWidth;
+  Int           iRoiHeight;
+
+  TComMv        cMvHalf, cMvQter;
+  TComMv        cMvSrchRngLT;
+  TComMv        cMvSrchRngRB;
+  TComYuv*      pcYuv = pcYuvOrg;
+  m_iSearchRange = m_aaiAdaptSR[eRefPicList][iRefIdxPred];
+
+  Double        fWeight       = 1.0;
+
+  Int           iSrchRng      = ( bBi ? m_bipredSearchRange : m_iSearchRange );
+  TComPattern*  pcPatternKey  = pcCU->getPattern        ();
+
+  pcCU->getPartIndexAndSize( iPartIdx, uiPartAddr, iRoiWidth, iRoiHeight );
+  //                  MvSrchRngLT.setHor((iPos_x-64)<0? -iPos_x:-64);
+//					MvSrchRngLT.setVer((iPos_y-64)<0? -iPos_y:-64);
+	//				MvSrchRngRB.setHor((iPos_x+64+8)>pcRefPicYUV->getWidth()? (pcRefPicYUV->getWidth()-iPos_x-8):64);
+	//				MvSrchRngRB.setVer((iPos_y+64+8)>pcRefPicYUV->getHeight()? (pcRefPicYUV->getHeight()-iPos_y-8):64);
+ 
+   //  Search key pattern initialization
+  pcPatternKey->initPattern( pcYuv->getLumaAddr( uiPartAddr ),
+                            pcYuv->getCbAddr  ( uiPartAddr ),
+                            pcYuv->getCrAddr  ( uiPartAddr ),
+                            iRoiWidth,
+                            iRoiHeight,
+                            pcYuv->getStride(),
+                            0, 0 );
+  Pel*        piRefY      = pcCU->getSlice()->getRefPic( eRefPicList, iRefIdxPred )->getPicYuvRec()->getLumaAddr( pcCU->getAddr(), pcCU->getZorderIdxInCU() + uiPartAddr );
+  Int         iRefStride  = pcCU->getSlice()->getRefPic( eRefPicList, iRefIdxPred )->getPicYuvRec()->getStride();
+  
+  TComMv      cMvPred = *pcMvPred;
+  if ( bBi )  xSetSearchRange   ( pcCU, rcMv   , iSrchRng, cMvSrchRngLT, cMvSrchRngRB );
+  else        xSetSearchRange   ( pcCU, cMvPred, iSrchRng, cMvSrchRngLT, cMvSrchRngRB );
+   m_pcRdCost->getMotionCost ( 1, 0 );
+
+  m_pcRdCost->setPredictor  ( *pcMvPred );
+  m_pcRdCost->setCostScale  ( 2 );
+  setWpScalingDistParam( pcCU, iRefIdxPred, eRefPicList );   //set WP tables
+  xIMEPatternSearch      ( pcPatternKey, piRefY, eRefPicList,iRefStride, &cMvSrchRngLT, &cMvSrchRngRB, rcMv, iRefIdxPred, ruiCost,searchflag);
+
+  m_pcRdCost->getMotionCost(1,0);
+  m_pcRdCost->setCostScale(1);
+  xPatternSearchFracDIF(pcCU, pcPatternKey, piRefY, iRefStride, &rcMv, cMvHalf, cMvQter, ruiCost,bBi);
+  m_pcRdCost->setCostScale( 0 );
+  rcMv <<= 2;
+  rcMv += (cMvHalf <<= 1);
+  rcMv +=  cMvQter;
+
+  UInt uiMvBits = m_pcRdCost->getBits( rcMv.getHor(), rcMv.getVer() );
+  
+  ruiBits      += uiMvBits;
+  ruiCost       = (UInt)( floor( fWeight * ( (Double)ruiCost - (Double)m_pcRdCost->getCost( uiMvBits ) ) ) + (Double)m_pcRdCost->getCost( ruiBits ) );
+}
+#endif
+
 Void TEncSearch::xMotionEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPartIdx, RefPicList eRefPicList, TComMv* pcMvPred, Int iRefIdxPred, TComMv& rcMv, UInt& ruiBits, UInt& ruiCost, Bool bBi  )
 {
   UInt          uiPartAddr;
@@ -3964,6 +4188,10 @@ Void TEncSearch::xMotionEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPa
   Double        fWeight       = 1.0;
   
   pcCU->getPartIndexAndSize( iPartIdx, uiPartAddr, iRoiWidth, iRoiHeight );
+//#if IME_MODIFY
+//  printf("iRoiWidth______________________________:%d\t",iRoiWidth);
+//  printf("iRoiHeight________________________________:%d\n",iRoiWidth);
+//#endif
   
   if ( bBi )
   {
@@ -3999,7 +4227,15 @@ Void TEncSearch::xMotionEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPa
   m_pcRdCost->setPredictor  ( *pcMvPred );
   m_pcRdCost->setCostScale  ( 2 );
 
-  setWpScalingDistParam( pcCU, iRefIdxPred, eRefPicList );
+  setWpScalingDistParam( pcCU, iRefIdxPred, eRefPicList );   //set WP tables
+
+//#if IME_MODIFY
+//  printf("piRefY:%d\t",piRefY);
+//  printf("iRefStride:%d\t",iRefStride);
+//  printf("cMvSrchRngLT:%d  , %d\t",cMvSrchRngLT.getHor(),cMvSrchRngLT.getVer());
+//  printf("cMvSrchRngRB:%d  , %d\t",cMvSrchRngRB.getHor(),cMvSrchRngRB.getVer());
+//   printf("rcMv:%d  , %d\n",rcMv.getHor(),rcMv.getVer());
+//#endif
   //  Do integer search
   if ( !m_iFastSearch || bBi )
   {
@@ -4008,12 +4244,13 @@ Void TEncSearch::xMotionEstimation( TComDataCU* pcCU, TComYuv* pcYuvOrg, Int iPa
   else
   {
     rcMv = *pcMvPred;
+	//===============xTZSearch===============//
     xPatternSearchFast  ( pcCU, pcPatternKey, piRefY, iRefStride, &cMvSrchRngLT, &cMvSrchRngRB, rcMv, ruiCost );
   }
   
   m_pcRdCost->getMotionCost( 1, 0 );
   m_pcRdCost->setCostScale ( 1 );
-  
+  //Do fraction search
   xPatternSearchFracDIF( pcCU, pcPatternKey, piRefY, iRefStride, &rcMv, cMvHalf, cMvQter, ruiCost,bBi );
   
   m_pcRdCost->setCostScale( 0 );
@@ -4046,12 +4283,492 @@ Void TEncSearch::xSetSearchRange ( TComDataCU* pcCU, TComMv& cMvPred, Int iSrchR
   rcMvSrchRngRB >>= iMvShift;
 }
 
+#if IME_MODIFY
+Void TEncSearch::xIMEPatternSearch(TComPattern* pcPatternKey, Pel* piRefY, RefPicList eRefPicList, Int iRefStride, TComMv* pcMvSrchRngLT, TComMv* pcMvSrchRngRB, TComMv& rcMv,Int iRefIdxPred, UInt& ruiSAD, Int searchflag)
+{
+  Int   iSrchRngHorLeft   = pcMvSrchRngLT->getHor();
+  Int   iSrchRngHorRight  = pcMvSrchRngRB->getHor();
+  Int   iSrchRngVerTop    = pcMvSrchRngLT->getVer();
+  Int   iSrchRngVerBottom = pcMvSrchRngRB->getVer();
+
+  Int   iBestX_1 = 0;
+  Int   iBestY_1 = 0;
+  Pel*  iBestRef_1=piRefY;
+  UInt  uiSadBest_1 = MAX_UINT;
+
+  Int   iBestX_2 = 0;
+  Int   iBestY_2 = 0;
+  Pel*  iBestRef_2=piRefY;
+  UInt  uiSadBest_2 = MAX_UINT;
+
+  Int   iBestX_3 = 0;
+  Int   iBestY_3 = 0;
+  Pel*  iBestRef_3=piRefY;
+  UInt  uiSadBest_3 = MAX_UINT;
+
+  Int   iBestX_4 = 0;
+  Int   iBestY_4 = 0;
+  Pel*  iBestRef_4=piRefY;
+  UInt  uiSadBest_4 = MAX_UINT;
+
+      Int offset=0;
+	  if(iRefIdxPred==0)
+		  offset=statusnumPU();
+	  if(iRefIdxPred==1)
+		  offset=statusnumPU_1();
+	  if(iRefIdxPred==2)
+		 offset=statusnumPU_2();
+	  if(iRefIdxPred==3)
+		 offset=statusnumPU_3();
+
+  if(!searchflag)
+  {
+  //--do per 8-pixel search
+     uiSadBest_1=searchBest(pcPatternKey,piRefY,MAX_UINT,piRefY,0,0,iRefStride,pcMvSrchRngLT,pcMvSrchRngRB,64,8,iBestX_1,iBestY_1,iBestRef_1);
+	   PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestX_8=iBestX_1;
+	   PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestY_8=iBestY_1;
+	   PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestRef_8=iBestRef_1;
+//	   PU[iRefIdxPred][offset+m_numCU*105].iSADBest_8=uiSadBest_1;
+    //--do per 4-pixel search
+    uiSadBest_2=searchBest(pcPatternKey,piRefY,uiSadBest_1,piRefY,iBestX_1,iBestY_1,iRefStride,pcMvSrchRngLT,pcMvSrchRngRB,4,4,iBestX_2,iBestY_2,iBestRef_2);
+       PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestX_4=iBestX_2;
+	   PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestY_4=iBestY_2;
+	   PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestRef_4=iBestRef_2;
+//	   PU[iRefIdxPred][offset+m_numCU*105].iSADBest_4=uiSadBest_2;
+    //--do per 2-pixel search
+    uiSadBest_3=searchBest(pcPatternKey,piRefY,uiSadBest_2,piRefY,iBestX_1+iBestX_2,iBestY_1+iBestY_2,iRefStride,pcMvSrchRngLT,pcMvSrchRngRB,2,2,iBestX_3,iBestY_3,iBestRef_3);
+       PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestX_2=iBestX_3;
+	   PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestY_2=iBestY_3;
+	   PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestRef_2=iBestRef_3;
+//	   PU[iRefIdxPred][offset+m_numCU*105].iSADBest_2=uiSadBest_3;
+    //--do per 1-pixel search
+   uiSadBest_4=searchBest(pcPatternKey,piRefY,uiSadBest_3,piRefY,iBestX_1+iBestX_2+iBestX_3,iBestY_1+iBestY_2+iBestY_3,iRefStride,pcMvSrchRngLT,pcMvSrchRngRB,1,1,iBestX_4,iBestY_4,iBestRef_4);
+   PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iSADBest=uiSadBest_4;
+   PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestX=iBestX_1+iBestX_2+iBestX_3+iBestX_4;
+   PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestY=iBestY_1+iBestY_2+iBestY_3+iBestY_4;
+   rcMv.set(PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestX,PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestY);
+   ruiSAD=uiSadBest_4;
+  }
+  else
+  {
+       Int secX,secY,UBestX,UBestY;
+	   Int secBestX=0;
+	   Int secBestY=0;
+	   Int relY=0;
+	   Int relX=0;
+	   Pel* secRef;
+	   Pel* BestRef=nullptr;
+	   UInt secBestSad=MAX_UINT;
+       Int allPUnum;
+	   if(iRefIdxPred==0)
+		   allPUnum=getPUnum(statusnumCU());
+	   if(iRefIdxPred==1)
+		   allPUnum=getPUnum_1(statusnumCU());
+	   if(iRefIdxPred==2)
+		   allPUnum=getPUnum_2(statusnumCU());
+	   if(iRefIdxPred==3)
+		   allPUnum=getPUnum_3(statusnumCU());
+        UBestX=PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestX;
+        UBestY=PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iBestY;
+        Int uiSadBest=PU[eRefPicList][iRefIdxPred][offset+m_numCU*110].iSADBest;
+      for(int pucount=1;pucount<allPUnum;pucount++)
+      {
+        //--do per 4-pixel search
+       secX=PU[eRefPicList][iRefIdxPred][pucount+m_numCU*110].iBestX_8;
+       secY=PU[eRefPicList][iRefIdxPred][pucount+m_numCU*110].iBestY_8;
+       secRef=PU[eRefPicList][iRefIdxPred][pucount+m_numCU*110].iBestRef_8;
+       //--relative position
+       relY=(secRef-piRefY)/iRefStride;
+       relX=(secRef-piRefY)%iRefStride;
+       secBestSad=searchBest(pcPatternKey,piRefY,uiSadBest,secRef,secX,secY,iRefStride,pcMvSrchRngLT,pcMvSrchRngRB,4,4,secBestX,secBestY,BestRef);
+       if(secBestSad<uiSadBest)
+        {
+		    uiSadBest=secBestSad;
+			UBestX=secBestX+relX;
+			UBestY=secBestY+relY;
+        }
+        //--do per 2-pixel search
+       secX=PU[eRefPicList][iRefIdxPred][pucount+m_numCU*110].iBestX_4;
+       secY=PU[eRefPicList][iRefIdxPred][pucount+m_numCU*110].iBestY_4;
+       secRef=PU[eRefPicList][iRefIdxPred][pucount+m_numCU*110].iBestRef_4;
+        //--relative position
+       relY=(secRef-piRefY)/iRefStride;
+       relX=(secRef-piRefY)%iRefStride;
+       secBestSad=searchBest(pcPatternKey,piRefY,uiSadBest,secRef,secX,secY,iRefStride,pcMvSrchRngLT,pcMvSrchRngRB,2,2,secBestX,secBestY,BestRef);
+       if(secBestSad<uiSadBest)
+        {
+		    uiSadBest=secBestSad;
+			UBestX=secBestX+relX;
+			UBestY=secBestY+relY;
+        }
+         //--do per 1-pixel search
+       secX=PU[eRefPicList][iRefIdxPred][pucount+m_numCU*110].iBestX_2;
+       secY=PU[eRefPicList][iRefIdxPred][pucount+m_numCU*110].iBestY_2;
+       secRef=PU[eRefPicList][iRefIdxPred][pucount+m_numCU*110].iBestRef_2;
+        //--relative position
+       relY=(secRef-piRefY)/iRefStride;
+       relX=(secRef-piRefY)%iRefStride;
+       secBestSad=searchBest(pcPatternKey,piRefY,uiSadBest,secRef,secX,secY,iRefStride,pcMvSrchRngLT,pcMvSrchRngRB,1,1,secBestX,secBestY,BestRef);
+       if(secBestSad<uiSadBest)
+        {
+		    uiSadBest=secBestSad;
+			UBestX=secBestX+relX;
+			UBestY=secBestY+relY;
+        }
+        //-----ultra determination
+       rcMv.set(UBestX, UBestY);
+//	   printf("MV X:%d\t",UBestX);
+//	   printf("MV Y:%d\n",UBestY);
+       ruiSAD=uiSadBest;
+      }
+  }
+}
+
+UInt TEncSearch::searchBest(TComPattern* pcPatternKey, Pel* piRefY,UInt uiSadBest_1,Pel* iBestRef_1,Int iBestX_1,Int iBestY_1,Int iRefStride,TComMv* pcMvSrchRngLT, TComMv* pcMvSrchRngRB,Int m,Int n,Int &iBestX, Int &iBestY,Pel* (&recBestRef))
+{
+	Pel*  piRefSrch;
+	UInt  uiSad;
+  Int   iSrchRngHorLeft   = pcMvSrchRngLT->getHor();
+  Int   iSrchRngHorRight  = pcMvSrchRngRB->getHor();
+  Int   iSrchRngVerTop    = pcMvSrchRngLT->getVer();
+  Int   iSrchRngVerBottom = pcMvSrchRngRB->getVer();
+   //-- jclee for using the SAD function pointer
+  m_pcRdCost->setDistParam( pcPatternKey, piRefY, iRefStride,  m_cDistParam );
+
+  //--relative position
+  Int relY=(iBestRef_1-piRefY)/iRefStride;
+  Int relX=(iBestRef_1-piRefY)%iRefStride;
+//--------n pixel search---------//
+   UInt uiSadBest_2 = uiSadBest_1;
+   Int   iBestX_2 = 0;
+   Int   iBestY_2 = 0;
+   Pel*   iBestRef_2=iBestRef_1;
+   Pel* piRefY_2=iBestRef_1-m*iRefStride;
+ //  printf("piRefY_2:%d\n",piRefY_2);
+ //   iBestRef_2=iBestRef_1;
+    for(Int y=-m;y<=m;y=y+n)
+    {
+        if(((iBestY_1+y+relY)>=iSrchRngVerTop)&&((iBestY_1+y+relY)<=iSrchRngVerBottom))
+        {
+        for(Int x=-m;x<=m;x=x+n)
+         {
+           if(((iBestX_1+x+relX)>=iSrchRngHorLeft)&&((iBestX_1+x+relX)<=iSrchRngHorRight))
+           {
+ //            if((y!=0)&&(x!=0))
+ //             {
+               piRefSrch=piRefY_2+x;
+               m_cDistParam.pCur = piRefSrch;
+
+               setDistParamComp(0);
+
+               m_cDistParam.bitDepth = g_bitDepthY;
+               uiSad = m_cDistParam.DistFunc( &m_cDistParam );
+
+            // motion cost
+ //              uiSad += m_pcRdCost->getCost( x, y );
+
+               if ( uiSad < uiSadBest_2 )
+               {
+                   uiSadBest_2 = uiSad;
+                   iBestX_2    = x;
+                   iBestY_2    = y;
+                  iBestRef_2  = piRefSrch;
+               }
+ //              }
+             }
+            }
+          }
+        piRefY_2+=n*iRefStride;
+    }
+    iBestX=iBestX_2;
+    iBestY=iBestY_2;
+    recBestRef=iBestRef_2;
+    return uiSadBest_2;
+}
+
+#else
+Void TEncSearch::xIMEPatternSearch(TComPattern* pcPatternKey, Pel* piRefY, Int iRefStride, TComMv* pcMvSrchRngLT, TComMv* pcMvSrchRngRB, TComMv& rcMv,Int iRefIdxPred, UInt& ruiSAD, Int searchflag)
+{
+  Int   iSrchRngHorLeft   = pcMvSrchRngLT->getHor();
+  Int   iSrchRngHorRight  = pcMvSrchRngRB->getHor();
+  Int   iSrchRngVerTop    = pcMvSrchRngLT->getVer();
+  Int   iSrchRngVerBottom = pcMvSrchRngRB->getVer();
+
+      Int offset=0;
+	  if(iRefIdxPred==0)
+		  offset=statusnumPU();
+	  if(iRefIdxPred==1)
+		  offset=statusnumPU_1();
+	  if(iRefIdxPred==2)
+		 offset=statusnumPU_2();
+	  if(iRefIdxPred==3)
+		 offset=statusnumPU_3();
+
+  if(!searchflag)
+  {
+
+  UInt  uiSad;
+  UInt  uiSadBest_1 = MAX_UINT;
+  Int   iBestX_1 = 0;
+  Int   iBestY_1 = 0;
+  Pel*   iBestRef_1=piRefY;
+  Pel*  piRefSrch;
+  Int fstBestX=0;
+  Int fstBestY=0;
+   //-- jclee for using the SAD function pointer
+  m_pcRdCost->setDistParam( pcPatternKey, piRefY, iRefStride,  m_cDistParam );
+
+  piRefY += (-64 * iRefStride);
+
+//------8 pixels full research  top left-> buttom right
+   for ( Int y = -64; y <= 63; y=y+8 )
+  {
+    if((y>=iSrchRngVerTop)&&(y<=iSrchRngVerBottom))
+    {
+    for ( Int x = -64; x <= 63; x=x+8)
+     {
+         if((x>=iSrchRngHorLeft)&&(x<=iSrchRngHorRight))
+        {
+      //  find min. distortion position
+          piRefSrch = piRefY + x;
+          m_cDistParam.pCur = piRefSrch;
+
+          setDistParamComp(0);
+
+          m_cDistParam.bitDepth = g_bitDepthY;
+          uiSad = m_cDistParam.DistFunc( &m_cDistParam );
+
+          // motion cost
+          uiSad += m_pcRdCost->getCost( x, y );
+
+        if ( uiSad < uiSadBest_1 )
+         {
+        uiSadBest_1 = uiSad;
+        iBestX_1    = x;
+        iBestY_1    = y;
+        iBestRef_1  = piRefSrch;
+         }
+        }
+      }
+     }
+    piRefY += 8*iRefStride;
+  }
+
+	  
+	   PU[iRefIdxPred][offset+m_numCU*105].iBestX=iBestX_1;
+	   PU[iRefIdxPred][offset+m_numCU*105].iBestY=iBestY_1;
+	   PU[iRefIdxPred][offset+m_numCU*105].iBestRef=iBestRef_1;
+	   PU[iRefIdxPred][offset+m_numCU*105].iSADBest=uiSadBest_1;
+//	   printf("Record Index:________________________________________%d\n",statusnumPU()+m_numCU*105);
+//	   secSearch(uiSadBest_1,iBestRef_1,iBestY_1,iBestX_1,iRefStride,pcMvSrchRngLT,pcMvSrchRngRB,fstBestX,fstBestY); 
+	   rcMv.set( iBestX_1, iBestY_1 );
+//       ruiSAD = uiSadBest_1 - m_pcRdCost->getCost( iBestX_1, iBestY_1 );
+	   ruiSAD=uiSadBest_1;
+   }
+   else
+   {
+	   Int secX,secY,UBestX,UBestY;
+	   Int secBestX=0;
+	   Int secBestY=0;
+	   Pel* secRef;
+	   UInt secSad=MAX_UINT;
+	   UInt comSad=MAX_UINT;
+	   Int allPUnum;
+	   if(iRefIdxPred==0)
+		   allPUnum=getPUnum(statusnumCU());
+	   if(iRefIdxPred==1)
+		   allPUnum=getPUnum_1(statusnumCU());
+	   if(iRefIdxPred==2)
+		   allPUnum=getPUnum_2(statusnumCU());
+	   if(iRefIdxPred==3)
+		   allPUnum=getPUnum_3(statusnumCU());
+     for(int pucount=1;pucount<allPUnum;pucount++)
+	 {
+		 secX=PU[iRefIdxPred][pucount+m_numCU*105].iBestX;
+	     secY=PU[iRefIdxPred][pucount+m_numCU*105].iBestY;
+		 secRef=PU[iRefIdxPred][pucount+m_numCU*105].iBestRef;
+//		 printf("secRef:%d\t",secRef);
+		 secSad=PU[iRefIdxPred][pucount+m_numCU*105].iSADBest;
+#if IME_MODIFY
+	   if((secRef==0)||(secSad==0))
+	   {  
+	      printf("hello world!");
+	   }
+#endif
+//		 printf("Get Index:_____________________________________%d\n",pucount+m_numCU*105);
+	    UInt BestSad=secSearch(pcPatternKey,piRefY,secSad,secRef,secY,secX,iRefStride,pcMvSrchRngLT,pcMvSrchRngRB,secBestX,secBestY);
+		 if(BestSad<comSad)
+		 {
+		    comSad=BestSad;
+			UBestX=secBestX;
+			UBestY=secBestY;
+		 }
+	 }
+	  //----------original per-8 pixel is best
+	 if(comSad==PU[iRefIdxPred][offset+m_numCU*105].iSADBest) 
+	 {
+		 UBestX=PU[iRefIdxPred][offset+m_numCU*105].iBestX; 
+		 UBestY=PU[iRefIdxPred][offset+m_numCU*105].iBestY;
+	 }  
+	 rcMv.set( UBestX, UBestY );
+//     ruiSAD = comSad - m_pcRdCost->getCost( UBestX, UBestY );
+	 ruiSAD=comSad;
+   }
+}
+
+UInt TEncSearch::secSearch(TComPattern* pcPatternKey, Pel* piRefY,UInt uiSadBest_1,Pel* iBestRef_1,Int iBestY_1,Int iBestX_1,Int iRefStride,TComMv* pcMvSrchRngLT, TComMv* pcMvSrchRngRB,Int &iBestX, Int &iBestY)
+{
+	Pel*  piRefSrch;
+	UInt  uiSad;
+  Int   iSrchRngHorLeft   = pcMvSrchRngLT->getHor();
+  Int   iSrchRngHorRight  = pcMvSrchRngRB->getHor();
+  Int   iSrchRngVerTop    = pcMvSrchRngLT->getVer();
+  Int   iSrchRngVerBottom = pcMvSrchRngRB->getVer();
+   //-- jclee for using the SAD function pointer
+  m_pcRdCost->setDistParam( pcPatternKey, piRefY, iRefStride,  m_cDistParam );
+
+  //--relative position
+  Int relY=(iBestRef_1-piRefY)/iRefStride;
+  Int relX=(iBestRef_1-piRefY)%iRefStride;
+//--------4 pixel search---------//
+   UInt uiSadBest_2 = uiSadBest_1;
+   Int   iBestX_2 = 0;
+   Int   iBestY_2 = 0;
+   Pel*   iBestRef_2=iBestRef_1;
+   Pel* piRefY_2=iBestRef_1-4*iRefStride;
+ //  printf("piRefY_2:%d\n",piRefY_2);
+ //   iBestRef_2=iBestRef_1;
+    for(Int y=-4;y<=4;y=y+4)
+    {
+        if(((iBestY_1+y+relY)>=iSrchRngVerTop)&&((iBestY_1+y+relY)<=iSrchRngVerBottom))
+        {
+        for(Int x=-4;x<=4;x=x+4)
+         {
+           if(((iBestX_1+x+relX)>=iSrchRngHorLeft)&&((iBestX_1+x+relX)<=iSrchRngHorRight))
+           {
+             if((y!=0)&&(x!=0))
+              {
+               piRefSrch=piRefY_2+x;
+               m_cDistParam.pCur = piRefSrch;
+
+               setDistParamComp(0);
+
+               m_cDistParam.bitDepth = g_bitDepthY;
+               uiSad = m_cDistParam.DistFunc( &m_cDistParam );
+
+            // motion cost
+               uiSad += m_pcRdCost->getCost( x, y );
+
+               if ( uiSad < uiSadBest_2 )
+               {
+                   uiSadBest_2 = uiSad;
+                   iBestX_2    = x;
+                   iBestY_2    = y;
+                  iBestRef_2  = piRefSrch;
+               }
+               }
+             }
+            }
+          }
+        piRefY_2+=4*iRefStride;
+       }
+//--------2 pixel search---------//
+    UInt uiSadBest_3 = uiSadBest_2;
+    Int   iBestX_3 = 0;
+    Int   iBestY_3 = 0;
+    Pel*   iBestRef_3=iBestRef_2;
+    Pel* piRefY_3=iBestRef_2-2*iRefStride;
+//    iBestRef_2=iBestRef_1;
+    for(Int y=-2;y<=2;y=y+2)
+    {
+        if(((iBestY_1+iBestY_2+y+relY)>=iSrchRngVerTop)&&((iBestY_1+iBestY_2+y+relY)<=iSrchRngVerBottom))
+        {
+        for(Int x=-2;x<=2;x=x+2)
+         {
+           if(((iBestX_1+iBestX_2+x+relX)>=iSrchRngHorLeft)&&((iBestX_1+iBestX_2+x+relX)<=iSrchRngHorRight))
+           {
+             if((y!=0)&&(x!=0))
+              {
+               piRefSrch=piRefY_3+x;
+               m_cDistParam.pCur = piRefSrch;
+
+               setDistParamComp(0);
+
+               m_cDistParam.bitDepth = g_bitDepthY;
+               uiSad = m_cDistParam.DistFunc( &m_cDistParam );
+
+            // motion cost
+               uiSad += m_pcRdCost->getCost( x, y );
+
+               if ( uiSad < uiSadBest_3 )
+               {
+                   uiSadBest_3 = uiSad;
+                   iBestX_3    = x;
+                   iBestY_3    = y;
+                  iBestRef_3  = piRefSrch;
+               }
+               }
+           }
+         }
+        }
+        piRefY_3+=2*iRefStride;
+    }
+    //--------1 pixel search---------//
+    UInt uiSadBest_4 = uiSadBest_3;
+    Int   iBestX_4 =0;
+    Int   iBestY_4 =0;
+    Pel*   iBestRef_4=iBestRef_3;
+    Pel*  piRefY_4=iBestRef_3-1*iRefStride;
+//    iBestRef_2=iBestRef_1;
+    for(Int y=-1;y<=1;y=y+1)
+    {
+        if(((iBestY_1+iBestY_2+iBestY_3+y+relY)>=iSrchRngVerTop)&&((iBestY_1+iBestY_2+iBestY_3+y+relY)<=iSrchRngVerBottom))
+        {
+        for(Int x=-1;x<=1;x=x+1)
+         {
+           if(((iBestX_1+iBestX_2+iBestX_3+x+relX)>=iSrchRngHorLeft)&&((iBestX_1+iBestX_2+iBestX_3+x+relX)<=iSrchRngHorRight))
+           {
+             if((y!=0)&&(x!=0))
+              {
+               piRefSrch=piRefY_4+x;
+               m_cDistParam.pCur = piRefSrch;
+
+               setDistParamComp(0);
+
+               m_cDistParam.bitDepth = g_bitDepthY;
+               uiSad = m_cDistParam.DistFunc( &m_cDistParam );
+
+            // motion cost
+               uiSad += m_pcRdCost->getCost( x, y );
+
+               if ( uiSad < uiSadBest_4 )
+               {
+                   uiSadBest_4 = uiSad;
+                   iBestX_4    = x;
+                   iBestY_4    = y;
+                  iBestRef_4  = piRefSrch;
+               }
+               }
+           }
+         }
+        }
+        piRefY_4+=1*iRefStride;
+    }
+   iBestX = iBestX_1+iBestX_2+iBestX_3+iBestX_4+relX;
+   iBestY = iBestY_1+iBestY_2+iBestY_3+iBestY_4+relY;
+ //   rcMv.set( iBestX, iBestY );
+ //   ruiSAD = uiSadBest_4 - m_pcRdCost->getCost( iBestX, iBestY );
+    return uiSadBest_4;
+}
+#endif
+
 Void TEncSearch::xPatternSearch( TComPattern* pcPatternKey, Pel* piRefY, Int iRefStride, TComMv* pcMvSrchRngLT, TComMv* pcMvSrchRngRB, TComMv& rcMv, UInt& ruiSAD )
 {
   Int   iSrchRngHorLeft   = pcMvSrchRngLT->getHor();
   Int   iSrchRngHorRight  = pcMvSrchRngRB->getHor();
   Int   iSrchRngVerTop    = pcMvSrchRngLT->getVer();
   Int   iSrchRngVerBottom = pcMvSrchRngRB->getVer();
+
   
   UInt  uiSad;
   UInt  uiSadBest         = MAX_UINT;

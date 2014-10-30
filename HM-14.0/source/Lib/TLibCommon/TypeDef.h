@@ -152,6 +152,12 @@
 #define NUM_CHROMA_MODE        5                     // total number of chroma modes
 #define DM_CHROMA_IDX          36                    // chroma mode index for derived from luma intra mode
 
+#define CHROMA_MODE_MODIFY     0                    //Intra chroma mode index for derived from luma intra mode 
+#define MODE_INDEX_MODIFY       0					//Intra chroma mode index is equal to 0
+#define MODIFIED				0
+#define CU_CODE_ORDER            0
+#define CODE_OEDER_MODIFY        1					//Code Order: 0,3,1,2
+
 
 #define FAST_UDI_USE_MPM 1
 
@@ -180,6 +186,9 @@
 #endif
 
 #define CABAC_INIT_PRESENT_FLAG     1
+
+#define IME_MODIFY      1     ///<implement IME search on the 32*32 size
+#define DEBUG            1
 
 // ====================================================================================================================
 // Basic type redefinition

@@ -878,10 +878,22 @@ Void TEncSlice::compressSlice( TComPic*& rpcPic )
   }
   // for every CU in slice
   UInt uiEncCUOrder;
+//#if CU_CODE_ORDER
+//  UInt TotalnumCU=(uiBoundingCUAddr+(rpcPic->getNumPartInCU()-1))/rpcPic->getNumPartInCU();
+//#endif
   for( uiEncCUOrder = uiStartCUAddr/rpcPic->getNumPartInCU();
        uiEncCUOrder < (uiBoundingCUAddr+(rpcPic->getNumPartInCU()-1))/rpcPic->getNumPartInCU();
-       uiCUAddr = rpcPic->getPicSym()->getCUOrderMap(++uiEncCUOrder) )
+//#if !CU_CODE_ORDER
+       uiCUAddr = rpcPic->getPicSym()->getCUOrderMap(++uiEncCUOrder) 
+//#endif
+	   )
   {
+#if MODIFIED
+	 TComPicSym*  cal=new TComPicSym();
+		cal->xCalculateNxtCUAddr(uiCUAddr);
+	 printf("================================================================");
+#endif
+
     // initialize CU encoder
     TComDataCU*& pcCU = rpcPic->getCU( uiCUAddr );
     pcCU->initCU( rpcPic, uiCUAddr );

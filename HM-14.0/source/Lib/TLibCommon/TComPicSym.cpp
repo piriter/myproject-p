@@ -275,10 +275,13 @@ UInt TComPicSym::xCalculateNxtCUAddr( UInt uiCurrCUAddr )
 {
   UInt  uiNxtCUAddr;
   UInt  uiTileIdx;
-  
+
   //get the tile index for the current LCU
   uiTileIdx = this->getTileIdxMap(uiCurrCUAddr);
-
+#if MODIFIED
+  UInt  numRightEdgePosInCU=this->getTComTile(uiTileIdx)->getRightEdgePosInCU();
+  printf("the number in the right edge:%d\n",numRightEdgePosInCU);
+#endif
   //get the raster scan address for the next LCU
   if( uiCurrCUAddr % m_uiWidthInCU == this->getTComTile(uiTileIdx)->getRightEdgePosInCU() && uiCurrCUAddr / m_uiWidthInCU == this->getTComTile(uiTileIdx)->getBottomEdgePosInCU() )
   //the current LCU is the last LCU of the tile

@@ -1,20 +1,18 @@
-﻿生成启动时间为 2014/10/29 23:25:07。
-     1>项目“E:\Github\myproject-p\HM-14.0\build\vc10\TAppCommon_vc10.vcxproj”在节点 4 上(rebuild 个目标)。
-     1>_PrepareForClean:
-         正在删除文件“E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TAppCommon\TAppCommon.lastbuildstate”。
-       InitializeBuildStatus:
-         正在创建“E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TAppCommon\TAppCommon.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+﻿生成启动时间为 2014/9/22 23:01:06。
+     1>项目“E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\vc10\TAppCommon_vc10.vcxproj”在节点 2 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在创建“E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TAppCommon\TAppCommon.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
        ClCompile:
-         D:\Program Files\Visual_Studio_2010\VC\bin\CL.exe /c /I"E:\Github\myproject-p\HM-14.0\build\\..\source\Lib\\" /I"E:\Github\myproject-p\HM-14.0\build\\..\compat\msvc" /Zi /nologo /W3 /WX- /O2 /Ob2 /Ot /Oy- /GL /D WIN32 /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TAppCommon\\" /Fd"E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TAppCommon\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\source\Lib\TAppCommon\program_options_lite.cpp
+         D:\Program Files\Visual_Studio_2010\VC\bin\CL.exe /c /I"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\..\source\Lib\\" /I"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\..\compat\msvc" /Zi /nologo /W3 /WX- /O2 /Ob2 /Ot /Oy- /GL /D WIN32 /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TAppCommon\\" /Fd"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TAppCommon\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\source\Lib\TAppCommon\program_options_lite.cpp
          program_options_lite.cpp
        Lib:
-         D:\Program Files\Visual_Studio_2010\VC\bin\Lib.exe /OUT:"E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TAppCommon\TAppCommon.lib" /NOLOGO /LTCG "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TAppCommon\program_options_lite.obj"
-         TAppCommon_vc10.vcxproj -> E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TAppCommon\TAppCommon.lib
+         D:\Program Files\Visual_Studio_2010\VC\bin\Lib.exe /OUT:"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TAppCommon\TAppCommon.lib" /NOLOGO /LTCG "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TAppCommon\program_options_lite.obj"
+         TAppCommon_vc10.vcxproj -> E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TAppCommon\TAppCommon.lib
        FinalizeBuildStatus:
-         正在删除文件“E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TAppCommon\TAppCommon.unsuccessfulbuild”。
-         正在对“E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TAppCommon\TAppCommon.lastbuildstate”执行 Touch 任务。
-     1>已完成生成项目“E:\Github\myproject-p\HM-14.0\build\vc10\TAppCommon_vc10.vcxproj”(rebuild 个目标)的操作。
+         正在删除文件“E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TAppCommon\TAppCommon.unsuccessfulbuild”。
+         正在对“E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TAppCommon\TAppCommon.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\vc10\TAppCommon_vc10.vcxproj”(build 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:01.27
+已用时间 00:00:01.81

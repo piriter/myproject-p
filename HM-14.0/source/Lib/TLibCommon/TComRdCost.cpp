@@ -686,8 +686,10 @@ UInt TComRdCost::xGetSAD32( DistParam* pcDtParam )
   {
     return xGetSADw( pcDtParam );
   }
-  Pel* piOrg   = pcDtParam->pOrg;
-  Pel* piCur   = pcDtParam->pCur;
+//  Pel* piCur;   
+ // piCur=pcDtParam->pOrg; 
+  Pel* piCur = pcDtParam->pCur;
+  Pel* piOrg   = pcDtParam->pOrg;  
   Int  iRows   = pcDtParam->iRows;
   Int  iSubShift  = pcDtParam->iSubShift;
   Int  iSubStep   = ( 1 << iSubShift );

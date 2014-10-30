@@ -97,7 +97,22 @@ private:
   TEncSbac***             m_pppcRDSbacCoder;
   TEncSbac*               m_pcRDGoOnSbacCoder;
   TEncRateCtrl*           m_pcRateCtrl;
+#if IME_MODIFY
+   Int m_countflag;
+//   Int m_segmentflag;
+#endif
 public:
+#if IME_MODIFY
+	void initcountflag() {m_countflag=0;}
+	void setcountflag() {m_countflag=1;}
+	void clearcountflag() {m_countflag=0;}
+	Int statuscountflag() {return m_countflag;}
+
+//	void initsmflag() {m_segmentflag=0;}
+//	void addsmflag() {m_segmentflag++;}
+//	void clearsmflag() {m_segmentflag=0;}
+//	Int statussmflag() {return m_segmentflag;}
+#endif
   /// copy parameters from encoder class
   Void  init                ( TEncTop* pcEncTop );
   
@@ -118,9 +133,12 @@ public:
 protected:
   Void  finishCU            ( TComDataCU*  pcCU, UInt uiAbsPartIdx,           UInt uiDepth        );
 #if AMP_ENC_SPEEDUP
-  Void  xCompressCU         ( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt uiDepth, PartSize eParentPartSize = SIZE_NONE );
+  Void  xCompressCU         ( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt uiDepth,Int searchflag, PartSize eParentPartSize = SIZE_NONE );
+#if IME_MODIFY
+  Void  xRecordPU          ( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt uiDepth,Int searchflag, PartSize eParentPartSize = SIZE_NONE );
+#endif
 #else
-  Void  xCompressCU         ( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt uiDepth        );
+  Void  xCompressCU         ( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, UInt uiDepth , Int searchflag );
 #endif
   Void  xEncodeCU           ( TComDataCU*  pcCU, UInt uiAbsPartIdx,           UInt uiDepth        );
   
@@ -130,9 +148,9 @@ protected:
   Void  xCheckRDCostMerge2Nx2N( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, Bool *earlyDetectionSkipMode);
 
 #if AMP_MRG
-  Void  xCheckRDCostInter   ( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, PartSize ePartSize, Bool bUseMRG = false  );
+  Void  xCheckRDCostInter   ( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, PartSize ePartSize, Int searchflag, Bool bUseMRG = false  );
 #else
-  Void  xCheckRDCostInter   ( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, PartSize ePartSize  );
+  Void  xCheckRDCostInter   ( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, PartSize ePartSize, Int searchflag  );
 #endif
   Void  xCheckRDCostIntra   ( TComDataCU*& rpcBestCU, TComDataCU*& rpcTempCU, PartSize ePartSize  );
   Void  xCheckDQP           ( TComDataCU*  pcCU );

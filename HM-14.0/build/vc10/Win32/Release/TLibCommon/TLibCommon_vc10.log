@@ -1,11 +1,9 @@
-﻿生成启动时间为 2014/10/29 23:25:04。
-     1>项目“E:\Github\myproject-p\HM-14.0\build\vc10\TLibCommon_vc10.vcxproj”在节点 5 上(rebuild 个目标)。
-     1>_PrepareForClean:
-         正在删除文件“E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TLibCommon.lastbuildstate”。
-       InitializeBuildStatus:
-         正在创建“E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TLibCommon.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+﻿生成启动时间为 2014/9/22 23:01:06。
+     1>项目“E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\vc10\TLibCommon_vc10.vcxproj”在节点 5 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在创建“E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TLibCommon.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
        ClCompile:
-         D:\Program Files\Visual_Studio_2010\VC\bin\CL.exe /c /I"E:\Github\myproject-p\HM-14.0\build\\..\source\Lib\\" /I"E:\Github\myproject-p\HM-14.0\build\\..\compat\msvc" /Zi /nologo /W3 /WX- /O2 /Ob2 /Ot /Oy- /GL /D WIN32 /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\\" /Fd"E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\source\Lib\TLibCommon\ContextModel.cpp ..\..\source\Lib\TLibCommon\ContextModel3DBuffer.cpp ..\..\source\Lib\TLibCommon\SEI.cpp ..\..\source\Lib\TLibCommon\TComBitStream.cpp ..\..\source\Lib\TLibCommon\TComCABACTables.cpp ..\..\source\Lib\TLibCommon\TComDataCU.cpp ..\..\source\Lib\TLibCommon\TComInterpolationFilter.cpp ..\..\source\Lib\TLibCommon\TComLoopFilter.cpp ..\..\source\Lib\TLibCommon\TComMotionInfo.cpp ..\..\source\Lib\TLibCommon\TComPattern.cpp ..\..\source\Lib\TLibCommon\TComPic.cpp ..\..\source\Lib\TLibCommon\TComPicSym.cpp ..\..\source\Lib\TLibCommon\TComPicYuv.cpp ..\..\source\Lib\TLibCommon\TComPicYuvMD5.cpp ..\..\source\Lib\TLibCommon\TComPrediction.cpp ..\..\source\Lib\TLibCommon\TComRdCost.cpp ..\..\source\Lib\TLibCommon\TComRdCostWeightPrediction.cpp ..\..\source\Lib\TLibCommon\TComRom.cpp ..\..\source\Lib\TLibCommon\TComSampleAdaptiveOffset.cpp ..\..\source\Lib\TLibCommon\TComSlice.cpp ..\..\source\Lib\TLibCommon\TComTrQuant.cpp ..\..\source\Lib\TLibCommon\TComWeightPrediction.cpp ..\..\source\Lib\TLibCommon\TComYuv.cpp
+         D:\Program Files\Visual_Studio_2010\VC\bin\CL.exe /c /I"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\..\source\Lib\\" /I"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\..\compat\msvc" /Zi /nologo /W3 /WX- /O2 /Ob2 /Ot /Oy- /GL /D WIN32 /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\\" /Fd"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\source\Lib\TLibCommon\ContextModel.cpp ..\..\source\Lib\TLibCommon\ContextModel3DBuffer.cpp ..\..\source\Lib\TLibCommon\SEI.cpp ..\..\source\Lib\TLibCommon\TComBitStream.cpp ..\..\source\Lib\TLibCommon\TComCABACTables.cpp ..\..\source\Lib\TLibCommon\TComDataCU.cpp ..\..\source\Lib\TLibCommon\TComInterpolationFilter.cpp ..\..\source\Lib\TLibCommon\TComLoopFilter.cpp ..\..\source\Lib\TLibCommon\TComMotionInfo.cpp ..\..\source\Lib\TLibCommon\TComPattern.cpp ..\..\source\Lib\TLibCommon\TComPic.cpp ..\..\source\Lib\TLibCommon\TComPicSym.cpp ..\..\source\Lib\TLibCommon\TComPicYuv.cpp ..\..\source\Lib\TLibCommon\TComPicYuvMD5.cpp ..\..\source\Lib\TLibCommon\TComPrediction.cpp ..\..\source\Lib\TLibCommon\TComRdCost.cpp ..\..\source\Lib\TLibCommon\TComRdCostWeightPrediction.cpp ..\..\source\Lib\TLibCommon\TComRom.cpp ..\..\source\Lib\TLibCommon\TComSampleAdaptiveOffset.cpp ..\..\source\Lib\TLibCommon\TComSlice.cpp ..\..\source\Lib\TLibCommon\TComTrQuant.cpp ..\..\source\Lib\TLibCommon\TComWeightPrediction.cpp ..\..\source\Lib\TLibCommon\TComYuv.cpp
          ContextModel.cpp
          ContextModel3DBuffer.cpp
          SEI.cpp
@@ -30,39 +28,39 @@
          TComTrQuant.cpp
          TComWeightPrediction.cpp
          TComYuv.cpp
-         D:\Program Files\Visual_Studio_2010\VC\bin\CL.exe /c /I"E:\Github\myproject-p\HM-14.0\build\\..\source\Lib\\" /I"E:\Github\myproject-p\HM-14.0\build\\..\compat\msvc" /Zi /nologo /W3 /WX- /O2 /Ob2 /Ot /Oy- /GL /D WIN32 /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\\" /Fd"E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt ..\..\source\Lib\libmd5\libmd5.c
+         D:\Program Files\Visual_Studio_2010\VC\bin\CL.exe /c /I"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\..\source\Lib\\" /I"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\..\compat\msvc" /Zi /nologo /W3 /WX- /O2 /Ob2 /Ot /Oy- /GL /D WIN32 /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\\" /Fd"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt ..\..\source\Lib\libmd5\libmd5.c
          libmd5.c
        Lib:
-         D:\Program Files\Visual_Studio_2010\VC\bin\Lib.exe /OUT:"E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TLibCommon.lib" /NOLOGO /LTCG "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\ContextModel.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\ContextModel3DBuffer.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\libmd5.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\SEI.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComBitStream.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComCABACTables.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComDataCU.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComInterpolationFilter.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComLoopFilter.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComMotionInfo.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPattern.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPic.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPicSym.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPicYuv.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPicYuvMD5.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPrediction.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComRdCost.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComRdCostWeightPrediction.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComRom.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComSampleAdaptiveOffset.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComSlice.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComTrQuant.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComWeightPrediction.obj"
-         "E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComYuv.obj"
-         TLibCommon_vc10.vcxproj -> E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TLibCommon.lib
+         D:\Program Files\Visual_Studio_2010\VC\bin\Lib.exe /OUT:"E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TLibCommon.lib" /NOLOGO /LTCG "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\ContextModel.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\ContextModel3DBuffer.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\libmd5.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\SEI.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComBitStream.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComCABACTables.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComDataCU.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComInterpolationFilter.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComLoopFilter.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComMotionInfo.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPattern.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPic.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPicSym.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPicYuv.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPicYuvMD5.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComPrediction.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComRdCost.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComRdCostWeightPrediction.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComRom.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComSampleAdaptiveOffset.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComSlice.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComTrQuant.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComWeightPrediction.obj"
+         "E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TComYuv.obj"
+         TLibCommon_vc10.vcxproj -> E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TLibCommon.lib
        FinalizeBuildStatus:
-         正在删除文件“E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TLibCommon.unsuccessfulbuild”。
-         正在对“E:\Github\myproject-p\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TLibCommon.lastbuildstate”执行 Touch 任务。
-     1>已完成生成项目“E:\Github\myproject-p\HM-14.0\build\vc10\TLibCommon_vc10.vcxproj”(rebuild 个目标)的操作。
+         正在删除文件“E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TLibCommon.unsuccessfulbuild”。
+         正在对“E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\\vc10\Win32\Release\TLibCommon\TLibCommon.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\A_LAB_workplace\HEVC_software\tags\HM-14.0\build\vc10\TLibCommon_vc10.vcxproj”(build 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:12.07
+已用时间 00:00:12.49

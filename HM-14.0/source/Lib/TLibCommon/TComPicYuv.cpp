@@ -79,7 +79,7 @@ Void TComPicYuv::create( Int iPicWidth, Int iPicHeight, UInt uiMaxCUWidth, UInt 
   Int numCuInWidth  = m_iPicWidth  / m_iCuWidth  + (m_iPicWidth  % m_iCuWidth  != 0);
   Int numCuInHeight = m_iPicHeight / m_iCuHeight + (m_iPicHeight % m_iCuHeight != 0);
   
-  m_iLumaMarginX    = g_uiMaxCUWidth  + 16; // for 16-byte alignment
+  m_iLumaMarginX    = g_uiMaxCUWidth  + 16; // for 16-byte alignment(margin=edge)
   m_iLumaMarginY    = g_uiMaxCUHeight + 16;  // margin for 8-tap filter and infinite padding
   
   m_iChromaMarginX  = m_iLumaMarginX>>1;

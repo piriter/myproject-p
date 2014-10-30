@@ -51,6 +51,24 @@
 
 //! \ingroup TLibEncoder
 //! \{
+typedef struct PUrecord
+{
+	Int iBestX_8;
+	Int iBestY_8;
+//	UInt iSADBest_8;
+	Pel* iBestRef_8;
+    Int iBestX_4;
+	Int iBestY_4;
+//	UInt iSADBest_4;
+	Pel* iBestRef_4;
+	Int iBestX_2;
+	Int iBestY_2;
+//	UInt iSADBest_2;
+	Pel* iBestRef_2;
+	Int iBestX;
+	Int iBestY;
+	UInt iSADBest;
+} PUrecord;
 
 class TEncCu;
 
@@ -92,6 +110,19 @@ private:
   Int*            m_ppcQTTempTUArlCoeffCb;
   Int*            m_ppcQTTempTUArlCoeffCr;
 #endif
+#if IME_MODIFY
+  Int m_IMEchange;
+  Int m_numPU;
+  Int m_numPU_1;
+  Int m_numPU_2;
+  Int m_numPU_3;
+  Int m_numCU;
+  Int m_PUnumrec[4];
+  Int m_PUnumrec_1[4];
+  Int m_PUnumrec_2[4];
+  Int m_PUnumrec_3[4];
+  PUrecord PU[2][4][445];           //max number of PU is 4*440;2-----bidirection
+#endif
 protected:
   // interface to option
   TEncCfg*        m_pcEncCfg;
@@ -127,7 +158,68 @@ protected:
 public:
   TEncSearch();
   virtual ~TEncSearch();
-  
+#if IME_MODIFY
+  Void setIMEflag() {m_IMEchange=1;}
+  Void clearIMEflag() {m_IMEchange=0;}
+  Int statusIMEflag() {return m_IMEchange;}
+
+  Void initnumCU() {m_numCU=-1;}
+  Void addnumCU() {m_numCU++;}
+  Void clearnumCU() {m_numCU=-1;}
+  Int statusnumCU() {return m_numCU;}
+  //<<<<<<---------------------1 reference pic--------------------------//
+  Void initnumPU() {m_numPU=0;}
+  Void addnumPU() {m_numPU++;}
+  Void clearnumPU() {m_numPU=0;}
+  Int statusnumPU() {return m_numPU;}
+
+  Void setPUnum(Int i, Int record) { m_PUnumrec[i]=record; }
+  Int getPUnum(Int i) { return m_PUnumrec[i]; }
+   //<<<<<<---------------------2 reference pic--------------------------//
+  Void initnumPU_1() {m_numPU_1=0;}
+  Void addnumPU_1() {m_numPU_1++;}
+  Void clearnumPU_1() {m_numPU_1=0;}
+  Int statusnumPU_1() {return m_numPU_1;}
+
+  Void setPUnum_1(Int i, Int record) { m_PUnumrec_1[i]=record; }
+  Int getPUnum_1(Int i) { return m_PUnumrec_1[i]; }
+   //<<<<<<---------------------3 reference pic--------------------------//
+  Void initnumPU_2() {m_numPU_2=0;}
+  Void addnumPU_2() {m_numPU_2++;}
+  Void clearnumPU_2() {m_numPU_2=0;}
+  Int statusnumPU_2() {return m_numPU_2;}
+
+  Void setPUnum_2(Int i, Int record) { m_PUnumrec_2[i]=record; }
+  Int getPUnum_2(Int i) { return m_PUnumrec_2[i]; }
+   //<<<<<<---------------------4 reference pic--------------------------//
+  Void initnumPU_3() {m_numPU_3=0;}
+  Void addnumPU_3() {m_numPU_3++;}
+  Void clearnumPU_3() {m_numPU_3=0;}
+  Int statusnumPU_3() {return m_numPU_3;}
+
+  Void setPUnum_3(Int i, Int record) { m_PUnumrec_3[i]=record; }
+  Int getPUnum_3(Int i) { return m_PUnumrec_3[i]; }
+
+  Void initRecord() { 
+	                 for(int i=0;i<2;i++)
+						 for(int j=0;j<4;j++)
+							 for(int k=0;k<445;k++)
+						 {
+						 PU[i][j][k].iBestX=0;
+						 PU[i][j][k].iBestY=0;
+						 PU[i][j][k].iSADBest=0;
+						 PU[i][j][k].iBestX_2=0;
+						 PU[i][j][k].iBestX_4=0;
+						 PU[i][j][k].iBestX_8=0;
+						 PU[i][j][k].iBestY_2=0;
+						 PU[i][j][k].iBestY_4=0;
+						 PU[i][j][k].iBestY_8=0;
+						 PU[i][j][k].iBestRef_2=nullptr;
+						 PU[i][j][k].iBestRef_4=nullptr;
+						 PU[i][j][k].iBestRef_8=nullptr;
+						 }
+                    }
+#endif
   Void init(  TEncCfg*      pcEncCfg,
             TComTrQuant*  pcTrQuant,
             Int           iSearchRange,
@@ -140,7 +232,22 @@ public:
             TEncSbac*     pcRDGoOnSbacCoder );
   
 protected:
-  
+#if IME_MODIFY
+	Void xIntMotionEstimation          ( TComDataCU*   pcCU,
+                                    TComYuv*      pcYuvOrg,
+                                    Int           iPartIdx,
+                                    RefPicList    eRefPicList,
+                                    TComMv*       pcMvPred,
+                                    Int           iRefIdxPred,
+                                    TComMv&       rcMv,
+                                    UInt&         ruiBits,
+                                    UInt&         ruiCost,
+									Int			  searchflag,
+                                    Bool          bBi = false  );
+	Void xIMEPatternSearch(TComPattern* pcPatternKey, Pel* piRefY, RefPicList eRefPicList,Int iRefStride, TComMv* pcMvSrchRngLT, TComMv* pcMvSrchRngRB, TComMv& rcMv,Int iRefIdxPred, UInt& ruiSAD, Int searchflag);
+	UInt searchBest(TComPattern* pcPatternKey, Pel* piRefY,UInt uiSadBest_1,Pel* iBestRef_1,Int iBestX_1,Int iBestY_1,Int iRefStride,TComMv* pcMvSrchRngLT, TComMv* pcMvSrchRngRB,Int m, Int n,Int &iBestX, Int &iBestY,Pel* (&recBestRef));
+    UInt secSearch(TComPattern* pcPatternKey, Pel* piRefY, UInt uiSadBest_1,Pel* iBestRef_1,Int iBestY_1,Int iBestX_1,Int iRefStride,TComMv* pcMvSrchRngLT, TComMv* pcMvSrchRngRB,Int &iBestX, Int &iBestY);
+#endif
   /// sub-function for motion vector refinement used in fractional-pel accuracy
   UInt  xPatternRefinement( TComPattern* pcPatternKey,
                            TComMv baseRefMv,
@@ -191,6 +298,7 @@ public:
                                   TComYuv*&   rpcPredYuv,
                                   TComYuv*&   rpcResiYuv,
                                   TComYuv*&   rpcRecoYuv,
+								  Int		  searchflag,
                                   Bool        bUseRes = false
 #if AMP_MRG
                                  ,Bool        bUseMRG = false
@@ -465,6 +573,8 @@ protected:
   inline  Void  setDistParamComp( UInt uiComp )  { m_cDistParam.uiComp = uiComp; }
   
 };// END CLASS DEFINITION TEncSearch
+
+
 
 //! \}
 
