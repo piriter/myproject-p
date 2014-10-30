@@ -1,0 +1,42 @@
+﻿生成启动时间为 2014/10/19 16:36:40。
+     1>项目“E:\A_LAB_workplace\HM-14.0_IME\build\vc10\TLibDecoder_vc10.vcxproj”在节点 4 上(rebuild 个目标)。
+     1>_PrepareForClean:
+         正在删除文件“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TLibDecoder.lastbuildstate”。
+       InitializeBuildStatus:
+         正在创建“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TLibDecoder.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         D:\Program Files\Visual_Studio_2010\VC\bin\x86_amd64\CL.exe /c /I"E:\A_LAB_workplace\HM-14.0_IME\build\\..\source\Lib\\" /I"E:\A_LAB_workplace\HM-14.0_IME\build\\..\compat\msvc" /Zi /nologo /W3 /WX- /O2 /Ob2 /Ot /GL /D WIN32 /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\\" /Fd"E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\vc100.pdb" /Gd /TP /errorReport:prompt ..\..\source\Lib\TLibDecoder\AnnexBread.cpp ..\..\source\Lib\TLibDecoder\NALread.cpp ..\..\source\Lib\TLibDecoder\SEIread.cpp ..\..\source\Lib\TLibDecoder\SyntaxElementParser.cpp ..\..\source\Lib\TLibDecoder\TDecBinCoderCABAC.cpp ..\..\source\Lib\TLibDecoder\TDecCAVLC.cpp ..\..\source\Lib\TLibDecoder\TDecCu.cpp ..\..\source\Lib\TLibDecoder\TDecEntropy.cpp ..\..\source\Lib\TLibDecoder\TDecGop.cpp ..\..\source\Lib\TLibDecoder\TDecSbac.cpp ..\..\source\Lib\TLibDecoder\TDecSlice.cpp ..\..\source\Lib\TLibDecoder\TDecTop.cpp
+         AnnexBread.cpp
+         NALread.cpp
+         SEIread.cpp
+         SyntaxElementParser.cpp
+         TDecBinCoderCABAC.cpp
+         TDecCAVLC.cpp
+         TDecCu.cpp
+         TDecEntropy.cpp
+         TDecGop.cpp
+         TDecSbac.cpp
+         TDecSlice.cpp
+         TDecTop.cpp
+       Lib:
+         D:\Program Files\Visual_Studio_2010\VC\bin\x86_amd64\Lib.exe /OUT:"E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TLibDecoder.lib" /NOLOGO /LTCG "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\AnnexBread.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\NALread.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\SEIread.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\SyntaxElementParser.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TDecBinCoderCABAC.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TDecCAVLC.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TDecCu.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TDecEntropy.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TDecGop.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TDecSbac.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TDecSlice.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TDecTop.obj"
+         TLibDecoder_vc10.vcxproj -> E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TLibDecoder.lib
+       FinalizeBuildStatus:
+         正在删除文件“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TLibDecoder.unsuccessfulbuild”。
+         正在对“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibDecoder\TLibDecoder.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\A_LAB_workplace\HM-14.0_IME\build\vc10\TLibDecoder_vc10.vcxproj”(rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:08.75

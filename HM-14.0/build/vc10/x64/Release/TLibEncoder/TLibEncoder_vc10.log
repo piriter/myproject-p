@@ -1,0 +1,60 @@
+﻿生成启动时间为 2014/10/19 16:36:37。
+     1>项目“E:\A_LAB_workplace\HM-14.0_IME\build\vc10\TLibEncoder_vc10.vcxproj”在节点 4 上(rebuild 个目标)。
+     1>_PrepareForClean:
+         正在删除文件“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TLibEncoder.lastbuildstate”。
+       InitializeBuildStatus:
+         正在创建“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TLibEncoder.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         D:\Program Files\Visual_Studio_2010\VC\bin\x86_amd64\CL.exe /c /I"E:\A_LAB_workplace\HM-14.0_IME\build\\..\source\Lib\\" /I"E:\A_LAB_workplace\HM-14.0_IME\build\\..\compat\msvc" /Zi /nologo /W3 /WX- /O2 /Ob2 /Ot /GL /D WIN32 /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\\" /Fd"E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\vc100.pdb" /Gd /TP /errorReport:prompt ..\..\source\Lib\TLibEncoder\NALwrite.cpp ..\..\source\Lib\TLibEncoder\SEIwrite.cpp ..\..\source\Lib\TLibEncoder\SyntaxElementWriter.cpp ..\..\source\Lib\TLibEncoder\TEncAnalyze.cpp ..\..\source\Lib\TLibEncoder\TEncBinCoderCABAC.cpp ..\..\source\Lib\TLibEncoder\TEncBinCoderCABACCounter.cpp ..\..\source\Lib\TLibEncoder\TEncCavlc.cpp ..\..\source\Lib\TLibEncoder\TEncCu.cpp ..\..\source\Lib\TLibEncoder\TEncEntropy.cpp ..\..\source\Lib\TLibEncoder\TEncGOP.cpp ..\..\source\Lib\TLibEncoder\TEncPic.cpp ..\..\source\Lib\TLibEncoder\TEncPreanalyzer.cpp ..\..\source\Lib\TLibEncoder\TEncRateCtrl.cpp ..\..\source\Lib\TLibEncoder\TEncSampleAdaptiveOffset.cpp ..\..\source\Lib\TLibEncoder\TEncSbac.cpp ..\..\source\Lib\TLibEncoder\TEncSearch.cpp ..\..\source\Lib\TLibEncoder\TEncSlice.cpp ..\..\source\Lib\TLibEncoder\TEncTop.cpp ..\..\source\Lib\TLibEncoder\WeightPredAnalysis.cpp
+         NALwrite.cpp
+         SEIwrite.cpp
+         SyntaxElementWriter.cpp
+         TEncAnalyze.cpp
+         TEncBinCoderCABAC.cpp
+         TEncBinCoderCABACCounter.cpp
+         TEncCavlc.cpp
+         TEncCu.cpp
+         TEncEntropy.cpp
+         TEncGOP.cpp
+         TEncPic.cpp
+         TEncPreanalyzer.cpp
+         TEncRateCtrl.cpp
+         TEncSampleAdaptiveOffset.cpp
+         TEncSbac.cpp
+         TEncSearch.cpp
+     1>..\..\source\Lib\TLibEncoder\TEncSearch.cpp(4381): warning C4244: “=”: 从“__int64”转换到“Int”，可能丢失数据
+     1>..\..\source\Lib\TLibEncoder\TEncSearch.cpp(4395): warning C4244: “=”: 从“__int64”转换到“Int”，可能丢失数据
+     1>..\..\source\Lib\TLibEncoder\TEncSearch.cpp(4409): warning C4244: “=”: 从“__int64”转换到“Int”，可能丢失数据
+     1>..\..\source\Lib\TLibEncoder\TEncSearch.cpp(4439): warning C4244: “初始化”: 从“__int64”转换到“Int”，可能丢失数据
+         TEncSlice.cpp
+         TEncTop.cpp
+         WeightPredAnalysis.cpp
+       Lib:
+         D:\Program Files\Visual_Studio_2010\VC\bin\x86_amd64\Lib.exe /OUT:"E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TLibEncoder.lib" /NOLOGO /LTCG "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\NALwrite.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\SEIwrite.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\SyntaxElementWriter.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncAnalyze.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncBinCoderCABAC.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncBinCoderCABACCounter.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncCavlc.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncCu.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncEntropy.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncGOP.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncPic.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncPreanalyzer.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncRateCtrl.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncSampleAdaptiveOffset.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncSbac.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncSearch.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncSlice.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TEncTop.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\WeightPredAnalysis.obj"
+         TLibEncoder_vc10.vcxproj -> E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TLibEncoder.lib
+       FinalizeBuildStatus:
+         正在删除文件“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TLibEncoder.unsuccessfulbuild”。
+         正在对“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TLibEncoder\TLibEncoder.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\A_LAB_workplace\HM-14.0_IME\build\vc10\TLibEncoder_vc10.vcxproj”(rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:17.22

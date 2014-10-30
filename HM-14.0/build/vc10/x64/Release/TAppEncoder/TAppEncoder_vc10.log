@@ -1,0 +1,233 @@
+﻿生成启动时间为 2014/10/19 16:36:54。
+     1>项目“E:\A_LAB_workplace\HM-14.0_IME\build\vc10\TAppEncoder_vc10.vcxproj”在节点 3 上(rebuild 个目标)。
+     1>_PrepareForClean:
+         正在删除文件“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TAppEncoder\TAppEncoder.lastbuildstate”。
+       InitializeBuildStatus:
+         正在创建“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TAppEncoder\TAppEncoder.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         D:\Program Files\Visual_Studio_2010\VC\bin\x86_amd64\CL.exe /c /I"E:\A_LAB_workplace\HM-14.0_IME\build\\..\source\Lib\\" /I"E:\A_LAB_workplace\HM-14.0_IME\build\\..\compat\msvc" /Zi /nologo /W4 /WX- /O2 /Ob2 /Ot /GL /D WIN32 /D _CONSOLE /D _CRT_SECURE_NO_WARNINGS /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TAppEncoder\\" /Fd"E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TAppEncoder\vc100.pdb" /Gd /TP /errorReport:prompt ..\..\source\App\TAppEncoder\encmain.cpp ..\..\source\App\TAppEncoder\TAppEncCfg.cpp ..\..\source\App\TAppEncoder\TAppEncTop.cpp
+         encmain.cpp
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComMv.h(150): warning C4244: “参数”: 从“Int”转换到“Short”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComMv.h(150): warning C4244: “参数”: 从“Int”转换到“Short”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComDataCU.h(230): warning C4244: “=”: 从“PartSize”转换到“Char”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComDataCU.h(243): warning C4244: “=”: 从“PredMode”转换到“Char”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComDataCU.h(316): warning C4244: “=”: 从“UInt”转换到“UChar”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComDataCU.h(362): warning C4244: “=”: 从“Int”转换到“Char”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComDataCU.h(366): warning C4244: “=”: 从“Int”转换到“Char”，可能丢失数据
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TLibCommon/ContextModel3DBuffer.h(94): warning C4512: “ContextModel3DBuffer”: 未能生成赋值运算符
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TLibCommon/ContextModel3DBuffer.h(57) : 参见“ContextModel3DBuffer”的声明
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncSbac.h(212): warning C4512: “TEncSbac”: 未能生成赋值运算符
+                 e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncSbac.h(66) : 参见“TEncSbac”的声明
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(98): warning C4100: “onlyEstMergeInfo”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(98): warning C4100: “aboveMergeAvail”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(98): warning C4100: “leftMergeAvail”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(98): warning C4100: “sliceEnabled”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(98): warning C4100: “saoBlkParam”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(131): warning C4100: “bExecuteFinish”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(131): warning C4100: “iQp”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(131): warning C4100: “eSliceType”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(132): warning C4100: “iQp”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(132): warning C4100: “eSliceType”: 未引用的形参
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TLibEncoder/TEncTop.h(191): warning C4512: “TEncTop”: 未能生成赋值运算符
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TLibEncoder/TEncTop.h(67) : 参见“TEncTop”的声明
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(110): warning C4512: “df::program_options_lite::Option<T>”: 未能生成赋值运算符
+                 with
+                 [
+                     T=std::string
+                 ]
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(133): 参见对正在编译的类 模板 实例化“df::program_options_lite::Option<T>”的引用
+                 with
+                 [
+                     T=std::string
+                 ]
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(160): warning C4512: “df::program_options_lite::OptionFunc”: 未能生成赋值运算符
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(139) : 参见“df::program_options_lite::OptionFunc”的声明
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(227): warning C4512: “df::program_options_lite::OptionSpecific”: 未能生成赋值运算符
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(194) : 参见“df::program_options_lite::OptionSpecific”的声明
+         TAppEncCfg.cpp
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(110): warning C4512: “df::program_options_lite::Option<T>”: 未能生成赋值运算符
+                 with
+                 [
+                     T=std::string
+                 ]
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(133): 参见对正在编译的类 模板 实例化“df::program_options_lite::Option<T>”的引用
+                 with
+                 [
+                     T=std::string
+                 ]
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(160): warning C4512: “df::program_options_lite::OptionFunc”: 未能生成赋值运算符
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(139) : 参见“df::program_options_lite::OptionFunc”的声明
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(227): warning C4512: “df::program_options_lite::OptionSpecific”: 未能生成赋值运算符
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(194) : 参见“df::program_options_lite::OptionSpecific”的声明
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComMv.h(150): warning C4244: “参数”: 从“Int”转换到“Short”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComMv.h(150): warning C4244: “参数”: 从“Int”转换到“Short”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\../TLibCommon/TComDataCU.h(230): warning C4244: “=”: 从“PartSize”转换到“Char”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\../TLibCommon/TComDataCU.h(243): warning C4244: “=”: 从“PredMode”转换到“Char”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\../TLibCommon/TComDataCU.h(316): warning C4244: “=”: 从“UInt”转换到“UChar”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\../TLibCommon/TComDataCU.h(362): warning C4244: “=”: 从“Int”转换到“Char”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\../TLibCommon/TComDataCU.h(366): warning C4244: “=”: 从“Int”转换到“Char”，可能丢失数据
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(110): warning C4512: “df::program_options_lite::Option<T>”: 未能生成赋值运算符
+                 with
+                 [
+                     T=Bool
+                 ]
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(208): 参见对正在编译的类 模板 实例化“df::program_options_lite::Option<T>”的引用
+                 with
+                 [
+                     T=Bool
+                 ]
+                 ..\..\source\App\TAppEncoder\TAppEncCfg.cpp(259): 参见对正在编译的函数 模板 实例化“df::program_options_lite::OptionSpecific &df::program_options_lite::OptionSpecific::operator ()<Bool>(const std::string &,T &,T,const std::string &)”的引用
+                 with
+                 [
+                     T=Bool
+                 ]
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(110): warning C4512: “df::program_options_lite::Option<T>”: 未能生成赋值运算符
+                 with
+                 [
+                     T=Int
+                 ]
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(208): 参见对正在编译的类 模板 实例化“df::program_options_lite::Option<T>”的引用
+                 with
+                 [
+                     T=Int
+                 ]
+                 ..\..\source\App\TAppEncoder\TAppEncCfg.cpp(266): 参见对正在编译的函数 模板 实例化“df::program_options_lite::OptionSpecific &df::program_options_lite::OptionSpecific::operator ()<Int>(const std::string &,T &,T,const std::string &)”的引用
+                 with
+                 [
+                     T=Int
+                 ]
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(110): warning C4512: “df::program_options_lite::Option<T>”: 未能生成赋值运算符
+                 with
+                 [
+                     T=UInt
+                 ]
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(208): 参见对正在编译的类 模板 实例化“df::program_options_lite::Option<T>”的引用
+                 with
+                 [
+                     T=UInt
+                 ]
+                 ..\..\source\App\TAppEncoder\TAppEncCfg.cpp(283): 参见对正在编译的函数 模板 实例化“df::program_options_lite::OptionSpecific &df::program_options_lite::OptionSpecific::operator ()<UInt>(const std::string &,T &,T,const std::string &)”的引用
+                 with
+                 [
+                     T=UInt
+                 ]
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(110): warning C4512: “df::program_options_lite::Option<T>”: 未能生成赋值运算符
+                 with
+                 [
+                     T=Profile::Name
+                 ]
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(208): 参见对正在编译的类 模板 实例化“df::program_options_lite::Option<T>”的引用
+                 with
+                 [
+                     T=Profile::Name
+                 ]
+                 ..\..\source\App\TAppEncoder\TAppEncCfg.cpp(291): 参见对正在编译的函数 模板 实例化“df::program_options_lite::OptionSpecific &df::program_options_lite::OptionSpecific::operator ()<Profile::Name>(const std::string &,T &,T,const std::string &)”的引用
+                 with
+                 [
+                     T=Profile::Name
+                 ]
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(110): warning C4512: “df::program_options_lite::Option<T>”: 未能生成赋值运算符
+                 with
+                 [
+                     T=Level::Name
+                 ]
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(208): 参见对正在编译的类 模板 实例化“df::program_options_lite::Option<T>”的引用
+                 with
+                 [
+                     T=Level::Name
+                 ]
+                 ..\..\source\App\TAppEncoder\TAppEncCfg.cpp(292): 参见对正在编译的函数 模板 实例化“df::program_options_lite::OptionSpecific &df::program_options_lite::OptionSpecific::operator ()<Level::Name>(const std::string &,T &,T,const std::string &)”的引用
+                 with
+                 [
+                     T=Level::Name
+                 ]
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(110): warning C4512: “df::program_options_lite::Option<T>”: 未能生成赋值运算符
+                 with
+                 [
+                     T=Level::Tier
+                 ]
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(208): 参见对正在编译的类 模板 实例化“df::program_options_lite::Option<T>”的引用
+                 with
+                 [
+                     T=Level::Tier
+                 ]
+                 ..\..\source\App\TAppEncoder\TAppEncCfg.cpp(293): 参见对正在编译的函数 模板 实例化“df::program_options_lite::OptionSpecific &df::program_options_lite::OptionSpecific::operator ()<Level::Tier>(const std::string &,T &,T,const std::string &)”的引用
+                 with
+                 [
+                     T=Level::Tier
+                 ]
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(110): warning C4512: “df::program_options_lite::Option<T>”: 未能生成赋值运算符
+                 with
+                 [
+                     T=Double
+                 ]
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(208): 参见对正在编译的类 模板 实例化“df::program_options_lite::Option<T>”的引用
+                 with
+                 [
+                     T=Double
+                 ]
+                 ..\..\source\App\TAppEncoder\TAppEncCfg.cpp(330): 参见对正在编译的函数 模板 实例化“df::program_options_lite::OptionSpecific &df::program_options_lite::OptionSpecific::operator ()<Double>(const std::string &,T &,T,const std::string &)”的引用
+                 with
+                 [
+                     T=Double
+                 ]
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(110): warning C4512: “df::program_options_lite::Option<T>”: 未能生成赋值运算符
+                 with
+                 [
+                     T=GOPEntry
+                 ]
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TAppCommon/program_options_lite.h(208): 参见对正在编译的类 模板 实例化“df::program_options_lite::Option<T>”的引用
+                 with
+                 [
+                     T=GOPEntry
+                 ]
+                 ..\..\source\App\TAppEncoder\TAppEncCfg.cpp(529): 参见对正在编译的函数 模板 实例化“df::program_options_lite::OptionSpecific &df::program_options_lite::OptionSpecific::operator ()<GOPEntry>(const std::string &,T &,T,const std::string &)”的引用
+                 with
+                 [
+                     T=GOPEntry
+                 ]
+         TAppEncTop.cpp
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComMv.h(150): warning C4244: “参数”: 从“Int”转换到“Short”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComMv.h(150): warning C4244: “参数”: 从“Int”转换到“Short”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComDataCU.h(230): warning C4244: “=”: 从“PartSize”转换到“Char”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComDataCU.h(243): warning C4244: “=”: 从“PredMode”转换到“Char”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComDataCU.h(316): warning C4244: “=”: 从“UInt”转换到“UChar”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComDataCU.h(362): warning C4244: “=”: 从“Int”转换到“Char”，可能丢失数据
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibcommon\TComDataCU.h(366): warning C4244: “=”: 从“Int”转换到“Char”，可能丢失数据
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TLibCommon/ContextModel3DBuffer.h(94): warning C4512: “ContextModel3DBuffer”: 未能生成赋值运算符
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TLibCommon/ContextModel3DBuffer.h(57) : 参见“ContextModel3DBuffer”的声明
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncSbac.h(212): warning C4512: “TEncSbac”: 未能生成赋值运算符
+                 e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncSbac.h(66) : 参见“TEncSbac”的声明
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(98): warning C4100: “onlyEstMergeInfo”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(98): warning C4100: “aboveMergeAvail”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(98): warning C4100: “leftMergeAvail”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(98): warning C4100: “sliceEnabled”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(98): warning C4100: “saoBlkParam”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(131): warning C4100: “bExecuteFinish”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(131): warning C4100: “iQp”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(131): warning C4100: “eSliceType”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(132): warning C4100: “iQp”: 未引用的形参
+     1>e:\a_lab_workplace\hm-14.0_ime\source\lib\tlibencoder\TEncCavlc.h(132): warning C4100: “eSliceType”: 未引用的形参
+     1>E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TLibEncoder/TEncTop.h(191): warning C4512: “TEncTop”: 未能生成赋值运算符
+                 E:\A_LAB_workplace\HM-14.0_IME\source\Lib\TLibEncoder/TEncTop.h(67) : 参见“TEncTop”的声明
+       Link:
+         D:\Program Files\Visual_Studio_2010\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"E:\A_LAB_workplace\HM-14.0_IME\build\\..\bin\vc10\x64\Release\TAppEncoder.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TAppEncoder\TAppEncoder.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\A_LAB_workplace\HM-14.0_IME\bin\vc10\x64\Release\TAppEncoder.pdb" /SUBSYSTEM:CONSOLE /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\A_LAB_workplace\HM-14.0_IME\build\\..\bin\vc10\x64\Release\TAppEncoder.lib" /MACHINE:X64 "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TAppEncoder\encmain.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TAppEncoder\TAppEncCfg.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TAppEncoder\TAppEncTop.obj"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\vc10\x64\Release\TAppCommon\TAppCommon.lib"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\vc10\x64\Release\TLibCommon\TLibCommon.lib"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\vc10\x64\Release\TLibEncoder\TLibEncoder.lib"
+         "E:\A_LAB_workplace\HM-14.0_IME\build\vc10\x64\Release\TLibVideoIo\TLibVideoIO.lib"
+         正在生成代码
+         已完成代码的生成
+         TAppEncoder_vc10.vcxproj -> E:\A_LAB_workplace\HM-14.0_IME\build\\..\bin\vc10\x64\Release\TAppEncoder.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"E:\A_LAB_workplace\HM-14.0_IME\build\\..\bin\vc10\x64\Release\TAppEncoder.exe;#1" /manifest "E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TAppEncoder\TAppEncoder.exe.intermediate.manifest"
+       FinalizeBuildStatus:
+         正在删除文件“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TAppEncoder\TAppEncoder.unsuccessfulbuild”。
+         正在对“E:\A_LAB_workplace\HM-14.0_IME\build\\vc10\x64\Release\TAppEncoder\TAppEncoder.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\A_LAB_workplace\HM-14.0_IME\build\vc10\TAppEncoder_vc10.vcxproj”(rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:25.32
